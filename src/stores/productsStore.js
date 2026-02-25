@@ -37,6 +37,62 @@ export const useProductsStore = defineStore("products", () => {
     return await res.json();
   }
 
+  async function addProduct(data) {
+    const newId = Math.max(0, ...products.value.map((p) => p.id)) + 1;
+    const res = await fetch("/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...data, id: newId }),
+    });
+    if (!res.ok) throw new Error("Помилка збереження товару");
+    const created = await res.json();
+    products.value.push(created);
+    return created;
+  }
+
+  async function updateProduct(data) {
+    const res = await fetch(`/api/products/${data.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("Помилка оновлення товару");
+    const updated = await res.json();
+    const idx = products.value.findIndex((p) => p.id === updated.id);
+    if (idx >= 0) products.value[idx] = updated;
+    return updated;
+  }
+
+  async function deleteProduct(id) {
+    const res = await fetch(`/api/products/${id}`, { method: "DELETE" });
+    if (!res.ok) throw new Error("Помилка видалення товару");
+    products.value = products.value.filter((p) => p.id !== id);
+  }
+
+  async function decreaseStock(productId, quantity) {
+    // Отримати поточний товар
+    const res = await fetch(`/api/products/${productId}`);
+    if (!res.ok) return;
+    const product = await res.json();
+
+    const currentStock = product.stock ?? 0;
+    const newStock = Math.max(0, currentStock - quantity);
+    const newInStock = newStock > 0;
+
+    const patchRes = await fetch(`/api/products/${productId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stock: newStock, inStock: newInStock }),
+    });
+    if (!patchRes.ok) return;
+    const updated = await patchRes.json();
+
+    // Оновити локальний стан
+    const idx = products.value.findIndex((p) => p.id === productId);
+    if (idx >= 0) products.value[idx] = updated;
+    return updated;
+  }
+
   return {
     products,
     categories,
@@ -45,5 +101,9 @@ export const useProductsStore = defineStore("products", () => {
     fetchProducts,
     fetchCategories,
     fetchProduct,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    decreaseStock,
   };
 });

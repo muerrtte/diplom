@@ -1,10 +1,12 @@
 <script setup>
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { useCartStore } from "../stores/cartStore";
+import CheckoutModal from "./CheckoutModal.vue";
 
 const cartStore = useCartStore();
 
 const subtotal = computed(() => cartStore.totalPrice);
+const showCheckout = ref(false);
 
 function formatPrice(price) {
   return price.toLocaleString("uk-UA") + " ₴";
@@ -224,6 +226,10 @@ function formatPrice(price) {
           }}</span>
         </div>
         <button
+          @click="
+            showCheckout = true;
+            cartStore.isOpen = false;
+          "
           class="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl transition-colors shadow-lg shadow-orange-500/25"
         >
           Оформити замовлення →
@@ -237,6 +243,13 @@ function formatPrice(price) {
       </div>
     </div>
   </Transition>
+
+  <!-- Checkout Modal -->
+  <CheckoutModal
+    v-if="showCheckout"
+    @close="showCheckout = false"
+    @success="showCheckout = false"
+  />
 </template>
 
 <style scoped>

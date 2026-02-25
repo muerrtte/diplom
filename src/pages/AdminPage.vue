@@ -1,12 +1,23 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import ProductFormModal from "../components/ProductFormModal.vue";
+import { useProductsStore } from "../stores/productsStore";
+import { useAuthStore } from "../stores/authStore";
+import { useOrdersStore } from "../stores/ordersStore";
+import { useRouter } from "vue-router";
+
+const store = useProductsStore();
+const auth = useAuthStore();
+const ordersStore = useOrdersStore();
+const router = useRouter();
+
+function handleLogout() {
+  auth.logout();
+  router.push("/");
+}
 
 // --- State ---
-const products = ref([]);
-const loading = ref(false);
-const error = ref(null);
-const activeTab = ref("products"); // 'dashboard' | 'products'
+const activeTab = ref("products"); // 'dashboard' | 'products' | 'orders' | 'users'
 
 // Modal state
 const showModal = ref(false);
@@ -17,54 +28,51 @@ const deleteConfirmId = ref(null);
 const searchQuery = ref("");
 const filterCategory = ref("");
 
-// --- API helpers ---
-async function fetchProducts() {
-  loading.value = true;
-  error.value = null;
-  try {
-    const res = await fetch("/api/products");
-    if (!res.ok) throw new Error();
-    products.value = await res.json();
-  } catch {
-    error.value = "Не вдалося завантажити товари. Запустіть: npm run mock";
-  } finally {
-    loading.value = false;
-  }
-}
+// Orders & users state
+const allUsers = ref([]);
+const orderSearch = ref("");
+const selectedOrderStatus = ref("");
+const expandedOrder = ref(null);
+const userSearch = ref("");
 
-async function saveProduct(data) {
-  if (data.id) {
-    // Update
-    const res = await fetch(`/api/products/${data.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    const updated = await res.json();
-    const idx = products.value.findIndex((p) => p.id === updated.id);
-    if (idx >= 0) products.value[idx] = updated;
-  } else {
-    // Create
-    const newId = Math.max(0, ...products.value.map((p) => p.id)) + 1;
-    const res = await fetch("/api/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...data, id: newId }),
-    });
-    const created = await res.json();
-    products.value.push(created);
-  }
-  showModal.value = false;
-  editingProduct.value = null;
-}
+// Toast notification
+const toast = ref(null); // { type: 'success'|'error', message: '' }
+let toastTimer = null;
 
-async function deleteProduct(id) {
-  await fetch(`/api/products/${id}`, { method: "DELETE" });
-  products.value = products.value.filter((p) => p.id !== id);
-  deleteConfirmId.value = null;
+function showToast(type, message) {
+  if (toastTimer) clearTimeout(toastTimer);
+  toast.value = { type, message };
+  toastTimer = setTimeout(() => (toast.value = null), 3500);
 }
 
 // --- Actions ---
+async function saveProduct(data) {
+  try {
+    if (data.id) {
+      await store.updateProduct(data);
+      showToast("success", `✅ Товар «${data.name}» оновлено`);
+    } else {
+      await store.addProduct(data);
+      showToast("success", `✅ Товар «${data.name}» успішно додано на сайт`);
+    }
+    showModal.value = false;
+    editingProduct.value = null;
+  } catch (e) {
+    showToast("error", `❌ ${e.message}`);
+  }
+}
+
+async function deleteProduct(id) {
+  const product = store.products.find((p) => p.id === id);
+  try {
+    await store.deleteProduct(id);
+    deleteConfirmId.value = null;
+    showToast("success", `🗑️ Товар «${product?.name}» видалено`);
+  } catch (e) {
+    showToast("error", `❌ ${e.message}`);
+  }
+}
+
 function openCreate() {
   editingProduct.value = null;
   showModal.value = true;
@@ -75,9 +83,22 @@ function openEdit(product) {
   showModal.value = true;
 }
 
+async function changeOrderStatus(order, status) {
+  try {
+    await ordersStore.updateOrderStatus(order.id, status);
+    showToast("success", `✅ Статус замовлення #${order.id} змінено`);
+  } catch (e) {
+    showToast("error", `❌ ${e.message}`);
+  }
+}
+
 // --- Computed ---
+const products = computed(() => store.products);
+const loading = computed(() => store.loading);
+const error = computed(() => store.error);
+
 const filteredProducts = computed(() => {
-  let list = products.value;
+  let list = store.products;
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.toLowerCase();
     list = list.filter(
@@ -91,17 +112,64 @@ const filteredProducts = computed(() => {
   return list;
 });
 
+const filteredOrders = computed(() => {
+  let list = ordersStore.orders;
+  if (orderSearch.value.trim()) {
+    const q = orderSearch.value.toLowerCase();
+    list = list.filter(
+      (o) =>
+        String(o.id).includes(q) ||
+        o.customerName?.toLowerCase().includes(q) ||
+        o.customerPhone?.includes(q) ||
+        o.customerEmail?.toLowerCase().includes(q),
+    );
+  }
+  if (selectedOrderStatus.value) {
+    list = list.filter((o) => o.status === selectedOrderStatus.value);
+  }
+  return list;
+});
+
+const filteredUsers = computed(() => {
+  if (!userSearch.value.trim()) return allUsers.value;
+  const q = userSearch.value.toLowerCase();
+  return allUsers.value.filter(
+    (u) =>
+      u.name?.toLowerCase().includes(q) ||
+      u.email?.toLowerCase().includes(q) ||
+      u.phone?.includes(q),
+  );
+});
+
+const orderStatusLabels = {
+  new: { label: "Нове", color: "bg-blue-100 text-blue-700" },
+  confirmed: { label: "Підтверджено", color: "bg-yellow-100 text-yellow-700" },
+  shipped: { label: "Відправлено", color: "bg-purple-100 text-purple-700" },
+  delivered: { label: "Доставлено", color: "bg-green-100 text-green-700" },
+  cancelled: { label: "Скасовано", color: "bg-red-100 text-red-700" },
+};
+
+function formatDate(d) {
+  return new Date(d).toLocaleString("uk-UA", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 const stats = computed(() => ({
-  total: products.value.length,
-  inStock: products.value.filter((p) => p.inStock).length,
-  onSale: products.value.filter((p) => p.isSale).length,
-  newItems: products.value.filter((p) => p.isNew).length,
-  avgPrice: products.value.length
+  total: store.products.length,
+  inStock: store.products.filter((p) => p.inStock).length,
+  onSale: store.products.filter((p) => p.isSale).length,
+  newItems: store.products.filter((p) => p.isNew).length,
+  avgPrice: store.products.length
     ? Math.round(
-        products.value.reduce((s, p) => s + p.price, 0) / products.value.length,
+        store.products.reduce((s, p) => s + p.price, 0) / store.products.length,
       )
     : 0,
-  brands: [...new Set(products.value.map((p) => p.brand))].length,
+  brands: [...new Set(store.products.map((p) => p.brand))].length,
 }));
 
 const categoryLabels = {
@@ -115,7 +183,11 @@ function formatPrice(p) {
   return p.toLocaleString("uk-UA") + " ₴";
 }
 
-onMounted(fetchProducts);
+onMounted(async () => {
+  await store.fetchProducts();
+  await ordersStore.fetchOrders();
+  allUsers.value = await ordersStore.fetchAllUsers();
+});
 </script>
 
 <template>
@@ -170,6 +242,57 @@ onMounted(fetchProducts);
           >
             👟 Товари
           </button>
+          <button
+            @click="activeTab = 'orders'"
+            class="px-3 py-1.5 rounded-lg font-medium transition-colors relative"
+            :class="
+              activeTab === 'orders'
+                ? 'bg-orange-100 text-orange-600'
+                : 'text-gray-500 hover:bg-gray-100'
+            "
+          >
+            📦 Замовлення
+            <span
+              v-if="ordersStore.orders.length > 0"
+              class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold"
+            >
+              {{
+                ordersStore.orders.filter((o) => o.status === "new").length ||
+                ""
+              }}
+            </span>
+          </button>
+          <button
+            @click="activeTab = 'users'"
+            class="px-3 py-1.5 rounded-lg font-medium transition-colors"
+            :class="
+              activeTab === 'users'
+                ? 'bg-orange-100 text-orange-600'
+                : 'text-gray-500 hover:bg-gray-100'
+            "
+          >
+            👥 Користувачі
+          </button>
+          <div class="w-px h-5 bg-gray-200 mx-1"></div>
+          <button
+            @click="handleLogout"
+            class="px-3 py-1.5 rounded-lg font-medium text-gray-500 hover:bg-red-50 hover:text-red-500 transition-colors flex items-center gap-1.5"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+              />
+            </svg>
+            Вийти
+          </button>
         </div>
       </div>
     </div>
@@ -190,7 +313,7 @@ onMounted(fetchProducts);
           >
         </div>
         <button
-          @click="fetchProducts"
+          @click="store.fetchProducts"
           class="ml-auto px-3 py-1.5 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
         >
           Повторити
@@ -204,7 +327,7 @@ onMounted(fetchProducts);
         </h2>
 
         <!-- Stats grid -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
           <div
             class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 col-span-2 md:col-span-1"
           >
@@ -282,6 +405,38 @@ onMounted(fetchProducts);
               {{ stats.avgPrice.toLocaleString("uk-UA") }}
             </p>
             <p class="text-xs text-gray-400 mt-1">₴</p>
+          </div>
+          <!-- Нові картки: замовлення та користувачі -->
+          <div
+            class="bg-orange-500 rounded-2xl p-4 shadow-sm col-span-1 cursor-pointer hover:bg-orange-600 transition-colors"
+            @click="activeTab = 'orders'"
+          >
+            <p
+              class="text-xs text-orange-100 font-medium uppercase tracking-wide"
+            >
+              Замовлень
+            </p>
+            <p class="text-3xl font-extrabold text-white mt-1">
+              {{ ordersStore.orders.length }}
+            </p>
+            <p class="text-xs text-orange-200 mt-1">
+              нових:
+              {{ ordersStore.orders.filter((o) => o.status === "new").length }}
+            </p>
+          </div>
+          <div
+            class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 cursor-pointer hover:border-orange-300 transition-colors"
+            @click="activeTab = 'users'"
+          >
+            <p
+              class="text-xs text-gray-400 font-medium uppercase tracking-wide"
+            >
+              Клієнтів
+            </p>
+            <p class="text-3xl font-extrabold text-gray-900 mt-1">
+              {{ allUsers.length }}
+            </p>
+            <p class="text-xs text-gray-400 mt-1">акаунтів</p>
           </div>
         </div>
 
@@ -543,7 +698,7 @@ onMounted(fetchProducts);
                     </div>
                   </td>
                   <td class="px-4 py-3 hidden sm:table-cell">
-                    <div class="flex flex-wrap gap-1">
+                    <div class="flex flex-wrap gap-1 items-center">
                       <span
                         v-if="product.inStock"
                         class="px-1.5 py-0.5 bg-green-100 text-green-700 rounded text-xs font-medium"
@@ -553,6 +708,11 @@ onMounted(fetchProducts);
                         v-else
                         class="px-1.5 py-0.5 bg-red-100 text-red-600 rounded text-xs font-medium"
                         >✗ Немає</span
+                      >
+                      <span
+                        v-if="product.stock !== undefined"
+                        class="px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded text-xs font-medium"
+                        >{{ product.stock }} шт</span
                       >
                       <span
                         v-if="product.isNew"
@@ -652,6 +812,326 @@ onMounted(fetchProducts);
           <p class="text-gray-500">Товарів не знайдено</p>
         </div>
       </div>
+
+      <!-- === ORDERS TAB === -->
+      <div v-if="activeTab === 'orders'">
+        <!-- Toolbar -->
+        <div class="flex flex-wrap items-center gap-3 mb-5">
+          <div
+            class="flex items-center gap-2 bg-white border-2 border-gray-200 rounded-xl px-3 py-2 focus-within:border-orange-400 transition-colors"
+          >
+            <svg
+              class="w-4 h-4 text-gray-400 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"
+              />
+            </svg>
+            <input
+              v-model="orderSearch"
+              placeholder="Пошук замовлень..."
+              class="text-sm outline-none bg-transparent w-48"
+            />
+          </div>
+          <select
+            v-model="selectedOrderStatus"
+            class="px-3 py-2 bg-white border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 cursor-pointer"
+          >
+            <option value="">Всі статуси</option>
+            <option
+              v-for="(info, key) in orderStatusLabels"
+              :key="key"
+              :value="key"
+            >
+              {{ info.label }}
+            </option>
+          </select>
+          <span class="text-sm text-gray-500">
+            Знайдено:
+            <span class="font-semibold text-gray-800">{{
+              filteredOrders.length
+            }}</span>
+            з {{ ordersStore.orders.length }}
+          </span>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="ordersStore.loading" class="space-y-3">
+          <div
+            v-for="n in 4"
+            :key="n"
+            class="bg-white rounded-2xl h-20 animate-pulse border border-gray-100"
+          ></div>
+        </div>
+
+        <!-- Empty -->
+        <div
+          v-else-if="filteredOrders.length === 0"
+          class="text-center py-16 bg-white rounded-2xl border border-gray-100"
+        >
+          <div class="text-5xl mb-3">📦</div>
+          <p class="text-gray-500">Замовлень не знайдено</p>
+        </div>
+
+        <!-- Orders list -->
+        <div v-else class="space-y-3">
+          <div
+            v-for="order in filteredOrders"
+            :key="order.id"
+            class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+          >
+            <!-- Order row -->
+            <div
+              class="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-gray-50 transition-colors"
+              @click="
+                expandedOrder = expandedOrder === order.id ? null : order.id
+              "
+            >
+              <div
+                class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 font-bold text-sm shrink-0"
+              >
+                #{{ order.id }}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-semibold text-gray-900 text-sm">{{
+                    order.customerName
+                  }}</span>
+                  <span class="text-gray-400 text-xs">{{
+                    order.customerPhone
+                  }}</span>
+                </div>
+                <div
+                  class="flex items-center gap-2 text-xs text-gray-400 mt-0.5"
+                >
+                  <span>{{ formatDate(order.createdAt) }}</span>
+                  <span>·</span>
+                  <span>{{ order.items?.length }} товар(и)</span>
+                  <span>·</span>
+                  <span class="font-semibold text-gray-700">{{
+                    formatPrice(order.total)
+                  }}</span>
+                </div>
+              </div>
+              <!-- Status selector -->
+              <select
+                :value="order.status"
+                @change="changeOrderStatus(order, $event.target.value)"
+                @click.stop
+                class="px-2 py-1.5 rounded-xl border-2 border-gray-200 text-xs font-semibold focus:outline-none focus:border-orange-400 cursor-pointer"
+                :class="orderStatusLabels[order.status]?.color"
+              >
+                <option
+                  v-for="(info, key) in orderStatusLabels"
+                  :key="key"
+                  :value="key"
+                >
+                  {{ info.label }}
+                </option>
+              </select>
+              <svg
+                class="w-4 h-4 text-gray-400 transition-transform shrink-0"
+                :class="{ 'rotate-180': expandedOrder === order.id }"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </div>
+
+            <!-- Order details -->
+            <Transition name="fade">
+              <div
+                v-if="expandedOrder === order.id"
+                class="border-t border-gray-100 px-5 py-4 bg-gray-50"
+              >
+                <div class="grid grid-cols-2 gap-3 text-sm mb-4">
+                  <div>
+                    <p class="text-gray-400 text-xs mb-0.5">Email</p>
+                    <p class="font-medium">{{ order.customerEmail || "—" }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-400 text-xs mb-0.5">Адреса</p>
+                    <p class="font-medium">
+                      {{ order.city }}, {{ order.address }}
+                    </p>
+                  </div>
+                  <div v-if="order.comment" class="col-span-2">
+                    <p class="text-gray-400 text-xs mb-0.5">Коментар</p>
+                    <p class="font-medium">{{ order.comment }}</p>
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <div
+                    v-for="item in order.items"
+                    :key="`${item.id}-${item.size}`"
+                    class="flex items-center gap-3 bg-white rounded-xl p-2"
+                  >
+                    <img
+                      :src="item.image"
+                      :alt="item.name"
+                      class="w-10 h-10 rounded-lg object-cover shrink-0"
+                    />
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-semibold text-gray-800 truncate">
+                        {{ item.brand }} {{ item.name }}
+                      </p>
+                      <p class="text-xs text-gray-500">
+                        Розмір {{ item.size }} · {{ item.quantity }} шт
+                      </p>
+                    </div>
+                    <span class="text-sm font-bold text-gray-900 shrink-0">{{
+                      formatPrice(item.price * item.quantity)
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+            </Transition>
+          </div>
+        </div>
+      </div>
+
+      <!-- === USERS TAB === -->
+      <div v-if="activeTab === 'users'">
+        <!-- Toolbar -->
+        <div class="flex items-center gap-3 mb-5">
+          <div
+            class="flex items-center gap-2 bg-white border-2 border-gray-200 rounded-xl px-3 py-2 focus-within:border-orange-400 transition-colors"
+          >
+            <svg
+              class="w-4 h-4 text-gray-400 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"
+              />
+            </svg>
+            <input
+              v-model="userSearch"
+              placeholder="Пошук користувачів..."
+              class="text-sm outline-none bg-transparent w-48"
+            />
+          </div>
+          <span class="text-sm text-gray-500">
+            Всього:
+            <span class="font-semibold text-gray-800">{{
+              allUsers.length
+            }}</span>
+            користувач(ів)
+          </span>
+        </div>
+
+        <!-- Empty -->
+        <div
+          v-if="allUsers.length === 0"
+          class="text-center py-16 bg-white rounded-2xl border border-gray-100"
+        >
+          <div class="text-5xl mb-3">👥</div>
+          <p class="text-gray-500">Зареєстрованих користувачів ще немає</p>
+        </div>
+
+        <!-- Users table -->
+        <div
+          v-else
+          class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+        >
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="bg-gray-50 border-b border-gray-100">
+                  <th
+                    class="text-left px-4 py-3 font-semibold text-gray-500 uppercase text-xs tracking-wide w-10"
+                  >
+                    ID
+                  </th>
+                  <th
+                    class="text-left px-4 py-3 font-semibold text-gray-500 uppercase text-xs tracking-wide"
+                  >
+                    Користувач
+                  </th>
+                  <th
+                    class="text-left px-4 py-3 font-semibold text-gray-500 uppercase text-xs tracking-wide hidden md:table-cell"
+                  >
+                    Телефон
+                  </th>
+                  <th
+                    class="text-left px-4 py-3 font-semibold text-gray-500 uppercase text-xs tracking-wide hidden lg:table-cell"
+                  >
+                    Дата реєстрації
+                  </th>
+                  <th
+                    class="text-left px-4 py-3 font-semibold text-gray-500 uppercase text-xs tracking-wide"
+                  >
+                    Замовлень
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                <tr
+                  v-for="user in filteredUsers"
+                  :key="user.id"
+                  class="hover:bg-gray-50 transition-colors"
+                >
+                  <td class="px-4 py-3 text-gray-400 font-mono text-xs">
+                    {{ user.id }}
+                  </td>
+                  <td class="px-4 py-3">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold text-xs shrink-0"
+                      >
+                        {{ user.name?.charAt(0)?.toUpperCase() }}
+                      </div>
+                      <div>
+                        <p class="font-semibold text-gray-900">
+                          {{ user.name }}
+                        </p>
+                        <p class="text-xs text-gray-400">{{ user.email }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-3 hidden md:table-cell text-gray-600">
+                    {{ user.phone || "—" }}
+                  </td>
+                  <td
+                    class="px-4 py-3 hidden lg:table-cell text-gray-400 text-xs"
+                  >
+                    {{ user.createdAt ? formatDate(user.createdAt) : "—" }}
+                  </td>
+                  <td class="px-4 py-3">
+                    <span
+                      class="px-2 py-1 bg-orange-100 text-orange-700 rounded-lg text-xs font-semibold"
+                    >
+                      {{
+                        ordersStore.orders.filter((o) => o.userId === user.id)
+                          .length
+                      }}
+                      шт
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Delete confirm dialog -->
@@ -697,6 +1177,21 @@ onMounted(fetchProducts);
         editingProduct = null;
       "
     />
+
+    <!-- Toast notification -->
+    <Transition name="toast">
+      <div
+        v-if="toast"
+        class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] px-5 py-3 rounded-2xl shadow-xl text-sm font-semibold flex items-center gap-2 min-w-[260px] max-w-sm"
+        :class="
+          toast.type === 'success'
+            ? 'bg-gray-900 text-white'
+            : 'bg-red-600 text-white'
+        "
+      >
+        {{ toast.message }}
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -708,5 +1203,15 @@ onMounted(fetchProducts);
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.toast-enter-active,
+.toast-leave-active {
+  transition: all 0.3s ease;
+}
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(16px);
 }
 </style>

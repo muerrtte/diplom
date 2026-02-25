@@ -3,11 +3,15 @@ import { ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useCartStore } from "../stores/cartStore";
 import { useFavoritesStore } from "../stores/favoritesStore";
+import { useAuthStore } from "../stores/authStore";
+import { useUserStore } from "../stores/userStore";
 
 const router = useRouter();
 const route = useRoute();
 const cartStore = useCartStore();
 const favoritesStore = useFavoritesStore();
+const auth = useAuthStore();
+const userStore = useUserStore();
 
 const searchQuery = ref("");
 const mobileMenuOpen = ref(false);
@@ -63,6 +67,7 @@ function handleSearch() {
             🔥 Розпродаж
           </RouterLink>
           <RouterLink
+            v-if="auth.isAuthenticated"
             to="/admin"
             class="px-3 py-2 rounded-lg text-gray-600 hover:text-orange-500 hover:bg-orange-50 transition-all"
             active-class="text-orange-500 bg-orange-50"
@@ -150,6 +155,45 @@ function handleSearch() {
               {{ cartStore.totalItems > 9 ? "9+" : cartStore.totalItems }}
             </span>
           </button>
+
+          <!-- User account button -->
+          <RouterLink
+            v-if="userStore.isLoggedIn"
+            to="/profile"
+            class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full hover:bg-orange-50 transition-colors group"
+            title="Мій профіль"
+          >
+            <div
+              class="w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0"
+            >
+              {{ userStore.currentUser.name?.charAt(0)?.toUpperCase() }}
+            </div>
+            <span
+              class="hidden sm:block text-sm font-medium text-gray-700 group-hover:text-orange-600 max-w-[80px] truncate"
+            >
+              {{ userStore.currentUser.name?.split(" ")[0] }}
+            </span>
+          </RouterLink>
+          <RouterLink
+            v-else
+            to="/login"
+            class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border-2 border-gray-200 hover:border-orange-400 hover:text-orange-500 transition-colors text-sm font-medium text-gray-600"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0zM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+              />
+            </svg>
+            Увійти
+          </RouterLink>
 
           <!-- Mobile menu button -->
           <button
@@ -241,6 +285,13 @@ function handleSearch() {
             @click="mobileMenuOpen = false"
             class="block px-3 py-2 rounded-lg text-red-500 font-semibold hover:bg-red-50"
             >🔥 Розпродаж</RouterLink
+          >
+          <RouterLink
+            v-if="auth.isAuthenticated"
+            to="/admin"
+            @click="mobileMenuOpen = false"
+            class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-500"
+            >⚙️ Адмін</RouterLink
           >
         </div>
       </Transition>
