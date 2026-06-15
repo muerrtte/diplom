@@ -20,7 +20,7 @@ const selectedColor = ref(0);
 const quantity = ref(1);
 const addedToCart = ref(false);
 const sizeError = ref(false);
-const activeTab = ref("description");
+const showSizeChart = ref(false);
 
 const isFav = computed(
   () => product.value && favoritesStore.isFavorite(product.value.id),
@@ -277,9 +277,9 @@ onMounted(loadProduct);
           <div class="mb-6">
             <div class="flex items-center justify-between mb-2">
               <p class="text-sm font-semibold text-gray-700">Розмір (EU)</p>
-              <a href="#" class="text-xs text-orange-500 hover:underline"
-                >Таблиця розмірів</a
-              >
+              <button @click="showSizeChart = true" class="text-xs text-orange-500 hover:underline">
+                Таблиця розмірів
+              </button>
             </div>
             <div class="flex flex-wrap gap-2">
               <button
@@ -432,124 +432,32 @@ onMounted(loadProduct);
         </div>
       </div>
 
-      <!-- Tabs: Description / Reviews -->
+      <!-- Description -->
       <div class="mt-12">
-        <div class="flex gap-1 border-b border-gray-200 mb-6">
-          <button
-            v-for="tab in ['description', 'reviews']"
-            :key="tab"
-            @click="activeTab = tab"
-            class="px-5 py-3 text-sm font-semibold border-b-2 transition-all -mb-px"
-            :class="
-              activeTab === tab
-                ? 'border-orange-500 text-orange-500'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
-            "
-          >
-            {{
-              tab === "description"
-                ? "📋 Опис"
-                : "⭐ Відгуки (" + product.reviewsCount + ")"
-            }}
-          </button>
-        </div>
-
-        <div
-          v-if="activeTab === 'description'"
-          class="prose prose-gray max-w-none"
-        >
-          <p class="text-gray-600 leading-relaxed text-base">
-            {{ product.description }}
-          </p>
-          <div class="mt-6 grid sm:grid-cols-2 gap-4">
-            <div class="bg-gray-50 rounded-2xl p-4">
-              <h4 class="font-semibold text-gray-900 mb-3">Характеристики</h4>
-              <dl class="space-y-2 text-sm">
-                <div class="flex justify-between">
-                  <dt class="text-gray-500">Бренд</dt>
-                  <dd class="font-medium text-gray-900">{{ product.brand }}</dd>
-                </div>
-                <div class="flex justify-between">
-                  <dt class="text-gray-500">Категорія</dt>
-                  <dd class="font-medium text-gray-900 capitalize">
-                    {{ product.category }}
-                  </dd>
-                </div>
-                <div class="flex justify-between">
-                  <dt class="text-gray-500">Стать</dt>
-                  <dd class="font-medium text-gray-900 capitalize">
-                    {{
-                      product.gender === "male"
-                        ? "Чоловіча"
-                        : product.gender === "female"
-                          ? "Жіноча"
-                          : "Унісекс"
-                    }}
-                  </dd>
-                </div>
-                <div class="flex justify-between">
-                  <dt class="text-gray-500">Доступні розміри</dt>
-                  <dd class="font-medium text-gray-900">
-                    {{ product.sizes.join(", ") }}
-                  </dd>
-                </div>
-              </dl>
+        <h2 class="text-xl font-bold text-gray-900 mb-4 pb-3 border-b border-gray-100">📋 Опис товару</h2>
+        <p class="text-gray-600 leading-relaxed text-base mb-6">{{ product.description }}</p>
+        <div class="bg-gray-50 rounded-2xl p-5 max-w-sm">
+          <h4 class="font-semibold text-gray-900 mb-3">Характеристики</h4>
+          <dl class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <dt class="text-gray-500">Бренд</dt>
+              <dd class="font-medium text-gray-900">{{ product.brand }}</dd>
             </div>
-          </div>
-        </div>
-
-        <div v-else class="space-y-4">
-          <!-- Mock reviews -->
-          <div
-            v-for="review in [
-              {
-                name: 'Олексій',
-                text: 'Чудові кросівки! Дуже зручні, замовив ще одну пару.',
-                stars: 5,
-              },
-              {
-                name: 'Марія',
-                text: 'Відповідають опису, швидка доставка. Рекомендую!',
-                stars: 5,
-              },
-              {
-                name: 'Дмитро',
-                text: 'Хороша якість, але трошки менше на розмір. Беріть на розмір більше.',
-                stars: 4,
-              },
-            ]"
-            :key="review.name"
-            class="bg-gray-50 rounded-2xl p-4"
-          >
-            <div class="flex items-center gap-3 mb-2">
-              <div
-                class="w-9 h-9 bg-orange-100 rounded-full flex items-center justify-center font-bold text-orange-600 text-sm"
-              >
-                {{ review.name[0] }}
-              </div>
-              <div>
-                <p class="font-semibold text-gray-900 text-sm">
-                  {{ review.name }}
-                </p>
-                <div class="flex">
-                  <svg
-                    v-for="n in 5"
-                    :key="n"
-                    class="w-3.5 h-3.5"
-                    :class="
-                      n <= review.stars ? 'fill-amber-400' : 'fill-gray-200'
-                    "
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005z"
-                    />
-                  </svg>
-                </div>
-              </div>
+            <div class="flex justify-between">
+              <dt class="text-gray-500">Категорія</dt>
+              <dd class="font-medium text-gray-900 capitalize">{{ product.category }}</dd>
             </div>
-            <p class="text-gray-600 text-sm">{{ review.text }}</p>
-          </div>
+            <div class="flex justify-between">
+              <dt class="text-gray-500">Стать</dt>
+              <dd class="font-medium text-gray-900">
+                {{ product.gender === "male" ? "Чоловіча" : product.gender === "female" ? "Жіноча" : "Унісекс" }}
+              </dd>
+            </div>
+            <div class="flex justify-between">
+              <dt class="text-gray-500">Розміри</dt>
+              <dd class="font-medium text-gray-900">{{ product.sizes.join(", ") }}</dd>
+            </div>
+          </dl>
         </div>
       </div>
 
@@ -562,4 +470,55 @@ onMounted(loadProduct);
       </div>
     </div>
   </div>
+
+  <!-- Size chart modal -->
+  <Transition name="fade">
+    <div
+      v-if="showSizeChart"
+      class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+      @click.self="showSizeChart = false"
+    >
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h3 class="text-lg font-bold text-gray-900">📏 Таблиця розмірів</h3>
+          <button @click="showSizeChart = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="px-6 py-4">
+          <p class="text-sm text-gray-500 mb-3">Розміри вказані в EU. Виміряйте стопу в сантиметрах.</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-center text-sm border-collapse">
+              <thead>
+                <tr class="bg-gray-50">
+                  <th class="px-3 py-2 border border-gray-200 font-semibold">EU</th>
+                  <th class="px-3 py-2 border border-gray-200 font-semibold">US (чол)</th>
+                  <th class="px-3 py-2 border border-gray-200 font-semibold">US (жін)</th>
+                  <th class="px-3 py-2 border border-gray-200 font-semibold">см</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in [[36,'4','5.5','22.5'],[37,'4.5','6','23'],[38,'5','6.5','23.5'],[39,'6','7.5','24.5'],[40,'7','8.5','25'],[41,'8','9.5','25.5'],[42,'9','10.5','26.5'],[43,'10','11.5','27'],[44,'11','12.5','27.5'],[45,'12','13.5','28.5'],[46,'13','14.5','29']]" :key="row[0]"
+                  :class="product?.sizes?.includes(row[0]) ? 'bg-orange-50' : ''"
+                  class="hover:bg-orange-50 transition-colors">
+                  <td class="px-3 py-2 border border-gray-200 font-semibold" :class="product?.sizes?.includes(row[0]) ? 'text-orange-600' : ''">{{ row[0] }}</td>
+                  <td class="px-3 py-2 border border-gray-200">{{ row[1] }}</td>
+                  <td class="px-3 py-2 border border-gray-200">{{ row[2] }}</td>
+                  <td class="px-3 py-2 border border-gray-200">{{ row[3] }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-xs text-gray-400 mt-3">Розміри цього товару, що є в наявності, виділені кольором.</p>
+        </div>
+      </div>
+    </div>
+  </Transition>
 </template>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+</style>

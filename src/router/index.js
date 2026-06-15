@@ -6,6 +6,7 @@ import AdminPage from "../pages/AdminPage.vue";
 import AdminLoginPage from "../pages/AdminLoginPage.vue";
 import LoginPage from "../pages/LoginPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
+import NotFoundPage from "../pages/NotFoundPage.vue";
 
 const routes = [
   { path: "/", name: "home", component: HomePage },
@@ -25,6 +26,7 @@ const routes = [
     component: AdminPage,
     meta: { requiresAuth: true },
   },
+  { path: "/:pathMatch(.*)*", name: "not-found", component: NotFoundPage },
 ];
 
 const router = createRouter({

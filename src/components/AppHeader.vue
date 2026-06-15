@@ -1,10 +1,11 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useCartStore } from "../stores/cartStore";
 import { useFavoritesStore } from "../stores/favoritesStore";
 import { useAuthStore } from "../stores/authStore";
 import { useUserStore } from "../stores/userStore";
+import { useMessagesStore } from "../stores/messagesStore";
 
 const router = useRouter();
 const route = useRoute();
@@ -12,17 +13,63 @@ const cartStore = useCartStore();
 const favoritesStore = useFavoritesStore();
 const auth = useAuthStore();
 const userStore = useUserStore();
+const messagesStore = useMessagesStore();
 
-const searchQuery = ref("");
+const searchQuery = ref(route.query.search || "");
 const mobileMenuOpen = ref(false);
+
+watch(() => route.query.search, (val) => {
+  searchQuery.value = val || "";
+});
 
 function handleSearch() {
   if (searchQuery.value.trim()) {
-    router.push({
-      path: "/",
-      query: { ...route.query, search: searchQuery.value.trim() },
-    });
+    router.push({ path: "/", query: { search: searchQuery.value.trim() } });
     mobileMenuOpen.value = false;
+  } else {
+    router.push({ path: "/" });
+  }
+}
+
+// Contact modal
+const contactOpen = ref(false);
+const contactForm = ref({ name: "", email: "", phone: "", text: "" });
+const contactSending = ref(false);
+const contactSent = ref(false);
+const contactError = ref("");
+
+function openContact() {
+  if (!userStore.isLoggedIn) {
+    router.push("/login");
+    mobileMenuOpen.value = false;
+    return;
+  }
+  contactForm.value = {
+    name: userStore.currentUser?.name || "",
+    email: userStore.currentUser?.email || "",
+    phone: userStore.currentUser?.phone || "",
+    text: "",
+  };
+  contactSent.value = false;
+  contactError.value = "";
+  contactOpen.value = true;
+  mobileMenuOpen.value = false;
+}
+
+async function sendContact() {
+  contactError.value = "";
+  if (!contactForm.value.name.trim() || !contactForm.value.text.trim()) {
+    contactError.value = "Заповніть ім'я та повідомлення";
+    return;
+  }
+  contactSending.value = true;
+  try {
+    await messagesStore.sendMessage(contactForm.value);
+    contactSent.value = true;
+  } catch {
+    contactError.value = "Помилка відправки. Спробуйте ще раз.";
+  } finally {
+    contactSending.value = false;
   }
 }
 </script>
@@ -48,32 +95,15 @@ function handleSearch() {
           >
             Головна
           </RouterLink>
-          <RouterLink
-            :to="{ path: '/', query: { category: 'running' } }"
-            class="px-3 py-2 rounded-lg text-gray-600 hover:text-orange-500 hover:bg-orange-50 transition-all"
+          <button
+            @click="openContact"
+            class="px-3 py-2 rounded-lg text-gray-600 hover:text-orange-500 hover:bg-orange-50 transition-all flex items-center gap-1.5"
           >
-            Бігові
-          </RouterLink>
-          <RouterLink
-            :to="{ path: '/', query: { category: 'casual' } }"
-            class="px-3 py-2 rounded-lg text-gray-600 hover:text-orange-500 hover:bg-orange-50 transition-all"
-          >
-            Повсякденні
-          </RouterLink>
-          <RouterLink
-            :to="{ path: '/', query: { isSale: 'true' } }"
-            class="px-3 py-2 rounded-lg text-red-500 hover:text-red-600 hover:bg-red-50 transition-all font-semibold"
-          >
-            🔥 Розпродаж
-          </RouterLink>
-          <RouterLink
-            v-if="auth.isAuthenticated"
-            to="/admin"
-            class="px-3 py-2 rounded-lg text-gray-600 hover:text-orange-500 hover:bg-orange-50 transition-all"
-            active-class="text-orange-500 bg-orange-50"
-          >
-            ⚙️ Адмін
-          </RouterLink>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+            </svg>
+            Написати нам
+          </button>
         </nav>
 
         <!-- Search bar -->
@@ -268,34 +298,124 @@ function handleSearch() {
             class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-500"
             >Головна</RouterLink
           >
-          <RouterLink
-            :to="{ path: '/', query: { category: 'running' } }"
-            @click="mobileMenuOpen = false"
-            class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-500"
-            >Бігові</RouterLink
+          <button
+            @click="openContact"
+            class="w-full text-left px-3 py-2 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-500 flex items-center gap-2"
           >
-          <RouterLink
-            :to="{ path: '/', query: { category: 'casual' } }"
-            @click="mobileMenuOpen = false"
-            class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-500"
-            >Повсякденні</RouterLink
-          >
-          <RouterLink
-            :to="{ path: '/', query: { isSale: 'true' } }"
-            @click="mobileMenuOpen = false"
-            class="block px-3 py-2 rounded-lg text-red-500 font-semibold hover:bg-red-50"
-            >🔥 Розпродаж</RouterLink
-          >
-          <RouterLink
-            v-if="auth.isAuthenticated"
-            to="/admin"
-            @click="mobileMenuOpen = false"
-            class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-500"
-            >⚙️ Адмін</RouterLink
-          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+            </svg>
+            Написати нам
+          </button>
         </div>
       </Transition>
     </div>
+
+    <!-- Contact modal -->
+    <Transition name="fade">
+      <div
+        v-if="contactOpen"
+        class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+        @click.self="contactOpen = false"
+      >
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+          <!-- Header -->
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+              </svg>
+              <h3 class="text-lg font-bold text-gray-900">Написати нам</h3>
+            </div>
+            <button @click="contactOpen = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Body -->
+          <div class="px-6 py-5">
+            <Transition name="fade" mode="out-in">
+              <!-- Success -->
+              <div v-if="contactSent" key="sent" class="text-center py-6">
+                <div class="text-5xl mb-3">✅</div>
+                <p class="text-lg font-semibold text-gray-900 mb-1">Повідомлення відправлено!</p>
+                <p class="text-sm text-gray-500 mb-5">Ми зв'яжемося з вами найближчим часом.</p>
+                <div class="flex gap-3">
+                  <button
+                    @click="contactSent = false; contactForm = { name: '', email: '', phone: '', text: '' }"
+                    class="flex-1 py-2.5 border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors text-sm"
+                  >
+                    Написати ще
+                  </button>
+                  <button
+                    @click="contactOpen = false"
+                    class="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-colors text-sm"
+                  >
+                    Закрити
+                  </button>
+                </div>
+              </div>
+
+              <!-- Form -->
+              <div v-else key="form" class="space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1">Ім'я *</label>
+                    <input
+                      v-model="contactForm.name"
+                      type="text"
+                      placeholder="Ваше ім'я"
+                      class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm focus:outline-none focus:border-orange-400 transition"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-500 mb-1">Телефон</label>
+                    <input
+                      v-model="contactForm.phone"
+                      type="tel"
+                      placeholder="+380..."
+                      class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm focus:outline-none focus:border-orange-400 transition"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-500 mb-1">Email</label>
+                  <input
+                    v-model="contactForm.email"
+                    type="email"
+                    placeholder="email@example.com"
+                    class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm focus:outline-none focus:border-orange-400 transition"
+                  />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-500 mb-1">Повідомлення *</label>
+                  <textarea
+                    v-model="contactForm.text"
+                    rows="4"
+                    placeholder="Ваше питання або пропозиція..."
+                    class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm focus:outline-none focus:border-orange-400 transition resize-none"
+                  ></textarea>
+                </div>
+                <p v-if="contactError" class="text-red-500 text-sm">{{ contactError }}</p>
+                <button
+                  @click="sendContact"
+                  :disabled="contactSending"
+                  class="w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold transition-colors disabled:opacity-60 flex items-center justify-center gap-2 text-sm"
+                >
+                  <svg v-if="contactSending" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                  </svg>
+                  {{ contactSending ? "Відправка..." : "Надіслати повідомлення" }}
+                </button>
+              </div>
+            </Transition>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </header>
 </template>
 
@@ -308,5 +428,13 @@ function handleSearch() {
 .slide-down-leave-to {
   opacity: 0;
   transform: translateY(-8px);
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

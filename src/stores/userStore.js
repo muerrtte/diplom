@@ -54,5 +54,19 @@ export const useUserStore = defineStore("user", () => {
     localStorage.removeItem("sneakshop_user");
   }
 
-  return { currentUser, isLoggedIn, register, login, logout };
+  async function updateProfile({ name, email, phone }) {
+    const res = await fetch(`/api/users/${currentUser.value.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, phone }),
+    });
+    if (!res.ok) throw new Error("Помилка збереження");
+    const updated = await res.json();
+    const { password: _pwd, ...safeUser } = updated;
+    currentUser.value = safeUser;
+    localStorage.setItem("sneakshop_user", JSON.stringify(safeUser));
+    return safeUser;
+  }
+
+  return { currentUser, isLoggedIn, register, login, logout, updateProfile };
 });

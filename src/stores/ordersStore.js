@@ -27,14 +27,20 @@ export const useOrdersStore = defineStore("orders", () => {
   }
 
   async function createOrder(orderData) {
+    const payload = {
+      ...orderData,
+      status: "new",
+      createdAt: new Date().toISOString(),
+    };
+
+    if (payload.userId == null) {
+      delete payload.userId;
+    }
+
     const res = await fetch("/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...orderData,
-        status: "new",
-        createdAt: new Date().toISOString(),
-      }),
+      body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error("Помилка створення замовлення");
     return await res.json();

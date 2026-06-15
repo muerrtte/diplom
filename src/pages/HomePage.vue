@@ -108,6 +108,7 @@ watch(
   },
 );
 
+
 onMounted(() => {
   store.fetchProducts();
 });
@@ -171,7 +172,7 @@ const hasActiveFilters = computed(
             <span class="text-orange-500">свій стиль</span>
           </h1>
           <p class="text-gray-300 text-lg mb-8 max-w-lg">
-            Понад 12 моделей від провідних брендів. Nike, Adidas, Puma та інші —
+            Понад 50 моделей від провідних брендів. Nike, Adidas, Puma та інші —
             знижки до 30%!
           </p>
           <div class="flex flex-wrap gap-3">
@@ -492,6 +493,7 @@ const hasActiveFilters = computed(
         />
       </div>
     </div>
+
   </div>
 </template>
 
@@ -520,5 +522,13 @@ const hasActiveFilters = computed(
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+.fade-msg-enter-active,
+.fade-msg-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-msg-enter-from,
+.fade-msg-leave-to {
+  opacity: 0;
 }
 </style>

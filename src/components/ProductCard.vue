@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useCartStore } from "../stores/cartStore";
 import { useFavoritesStore } from "../stores/favoritesStore";
 
@@ -12,6 +12,15 @@ const favoritesStore = useFavoritesStore();
 
 const showSizes = ref(false);
 const addedToCart = ref(false);
+const cardRef = ref(null);
+
+function onClickOutside(e) {
+  if (showSizes.value && cardRef.value && !cardRef.value.contains(e.target)) {
+    showSizes.value = false;
+  }
+}
+onMounted(() => document.addEventListener("click", onClickOutside));
+onUnmounted(() => document.removeEventListener("click", onClickOutside));
 
 function toggleFavorite(e) {
   e.preventDefault();
@@ -45,6 +54,7 @@ function renderStars(rating) {
 
 <template>
   <RouterLink
+    ref="cardRef"
     :to="`/product/${product.id}`"
     class="group block bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-orange-200 relative"
   >

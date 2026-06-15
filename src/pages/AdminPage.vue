@@ -4,11 +4,13 @@ import ProductFormModal from "../components/ProductFormModal.vue";
 import { useProductsStore } from "../stores/productsStore";
 import { useAuthStore } from "../stores/authStore";
 import { useOrdersStore } from "../stores/ordersStore";
+import { useMessagesStore } from "../stores/messagesStore";
 import { useRouter } from "vue-router";
 
 const store = useProductsStore();
 const auth = useAuthStore();
 const ordersStore = useOrdersStore();
+const messagesStore = useMessagesStore();
 const router = useRouter();
 
 function handleLogout() {
@@ -38,6 +40,49 @@ const userSearch = ref("");
 // Toast notification
 const toast = ref(null); // { type: 'success'|'error', message: '' }
 let toastTimer = null;
+
+// Write to client modal
+const showWriteModal = ref(false);
+const writeForm = ref({ userId: "", email: "", text: "" });
+const writeSending = ref(false);
+const writeSent = ref(false);
+
+function openWriteModal() {
+  writeForm.value = { userId: "", email: "", text: "" };
+  writeSent.value = false;
+  showWriteModal.value = true;
+}
+
+async function sendToClient() {
+  if (!writeForm.value.text.trim()) return;
+  const user = allUsers.value.find((u) => String(u.id) === String(writeForm.value.userId));
+  const toEmail = user?.email || writeForm.value.email;
+  if (!toEmail) return;
+  writeSending.value = true;
+  try {
+    await fetch("/api/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "Адмін SneakShop",
+        email: "admin@sneakshop.com",
+        phone: "",
+        text: writeForm.value.text,
+        toEmail,
+        toName: user?.name || toEmail,
+        fromAdmin: true,
+        read: true,
+        createdAt: new Date().toISOString(),
+      }),
+    });
+    writeSent.value = true;
+    showToast("success", `✅ Повідомлення надіслано до ${user?.name || toEmail}`);
+  } catch {
+    showToast("error", "❌ Помилка відправки");
+  } finally {
+    writeSending.value = false;
+  }
+}
 
 function showToast(type, message) {
   if (toastTimer) clearTimeout(toastTimer);
@@ -165,11 +210,15 @@ const stats = computed(() => ({
   onSale: store.products.filter((p) => p.isSale).length,
   newItems: store.products.filter((p) => p.isNew).length,
   avgPrice: store.products.length
-    ? Math.round(
-        store.products.reduce((s, p) => s + p.price, 0) / store.products.length,
-      )
+    ? Math.round(store.products.reduce((s, p) => s + p.price, 0) / store.products.length)
     : 0,
   brands: [...new Set(store.products.map((p) => p.brand))].length,
+  totalRevenue: ordersStore.orders
+    .filter((o) => o.status !== "cancelled")
+    .reduce((s, o) => s + (o.total || 0), 0),
+  cashPending: ordersStore.orders
+    .filter((o) => o.paymentMethod === "cash" && !["cancelled","delivered"].includes(o.status))
+    .reduce((s, o) => s + (o.total || 0), 0),
 }));
 
 const categoryLabels = {
@@ -187,6 +236,7 @@ onMounted(async () => {
   await store.fetchProducts();
   await ordersStore.fetchOrders();
   allUsers.value = await ordersStore.fetchAllUsers();
+  await messagesStore.fetchMessages();
 });
 </script>
 
@@ -273,6 +323,33 @@ onMounted(async () => {
           >
             👥 Користувачі
           </button>
+          <button
+            @click="activeTab = 'messages'"
+            class="px-3 py-1.5 rounded-lg font-medium transition-colors relative"
+            :class="
+              activeTab === 'messages'
+                ? 'bg-orange-100 text-orange-600'
+                : 'text-gray-500 hover:bg-gray-100'
+            "
+          >
+            ✉️ Повідомлення
+            <span
+              v-if="messagesStore.unreadCount > 0"
+              class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold"
+            >
+              {{ messagesStore.unreadCount > 9 ? "9+" : messagesStore.unreadCount }}
+            </span>
+          </button>
+          <div class="w-px h-5 bg-gray-200 mx-1"></div>
+          <button
+            @click="openWriteModal"
+            class="px-3 py-1.5 rounded-lg font-medium transition-colors text-white bg-orange-500 hover:bg-orange-600 flex items-center gap-1.5"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+            </svg>
+            Написати клієнту
+          </button>
           <div class="w-px h-5 bg-gray-200 mx-1"></div>
           <button
             @click="handleLogout"
@@ -327,7 +404,7 @@ onMounted(async () => {
         </h2>
 
         <!-- Stats grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-9 gap-4 mb-8">
           <div
             class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 col-span-2 md:col-span-1"
           >
@@ -437,6 +514,35 @@ onMounted(async () => {
               {{ allUsers.length }}
             </p>
             <p class="text-xs text-gray-400 mt-1">акаунтів</p>
+          </div>
+          <div
+            class="rounded-2xl p-4 shadow-sm border cursor-pointer transition-colors col-span-1"
+            :class="messagesStore.unreadCount > 0 ? 'bg-red-500 border-red-400 hover:bg-red-600' : 'bg-white border-gray-100 hover:border-orange-300'"
+            @click="activeTab = 'messages'"
+          >
+            <p class="text-xs font-medium uppercase tracking-wide" :class="messagesStore.unreadCount > 0 ? 'text-red-100' : 'text-gray-400'">
+              Повідомлень
+            </p>
+            <p class="text-3xl font-extrabold mt-1" :class="messagesStore.unreadCount > 0 ? 'text-white' : 'text-gray-900'">
+              {{ messagesStore.messages.length }}
+            </p>
+            <p class="text-xs mt-1" :class="messagesStore.unreadCount > 0 ? 'text-red-200' : 'text-gray-400'">
+              нових: {{ messagesStore.unreadCount }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Revenue block -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-5 shadow-md text-white">
+            <p class="text-xs text-green-100 font-semibold uppercase tracking-wide mb-1">💰 Загальний дохід</p>
+            <p class="text-4xl font-extrabold">{{ stats.totalRevenue.toLocaleString("uk-UA") }} ₴</p>
+            <p class="text-green-200 text-sm mt-2">По всіх замовленнях (крім скасованих)</p>
+          </div>
+          <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">💵 Очікується готівкою</p>
+            <p class="text-4xl font-extrabold text-orange-500">{{ stats.cashPending.toLocaleString("uk-UA") }} ₴</p>
+            <p class="text-gray-400 text-sm mt-2">Активні замовлення з оплатою при отриманні</p>
           </div>
         </div>
 
@@ -817,186 +923,163 @@ onMounted(async () => {
       <div v-if="activeTab === 'orders'">
         <!-- Toolbar -->
         <div class="flex flex-wrap items-center gap-3 mb-5">
-          <div
-            class="flex items-center gap-2 bg-white border-2 border-gray-200 rounded-xl px-3 py-2 focus-within:border-orange-400 transition-colors"
-          >
-            <svg
-              class="w-4 h-4 text-gray-400 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"
-              />
+          <div class="flex items-center gap-2 bg-white border-2 border-gray-200 rounded-xl px-3 py-2 focus-within:border-orange-400 transition-colors">
+            <svg class="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z"/>
             </svg>
-            <input
-              v-model="orderSearch"
-              placeholder="Пошук замовлень..."
-              class="text-sm outline-none bg-transparent w-48"
-            />
+            <input v-model="orderSearch" placeholder="Ім'я, email, місто..." class="text-sm outline-none bg-transparent w-48"/>
           </div>
-          <select
-            v-model="selectedOrderStatus"
-            class="px-3 py-2 bg-white border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 cursor-pointer"
-          >
+          <select v-model="selectedOrderStatus" class="px-3 py-2 bg-white border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-orange-400 cursor-pointer">
             <option value="">Всі статуси</option>
-            <option
-              v-for="(info, key) in orderStatusLabels"
-              :key="key"
-              :value="key"
-            >
-              {{ info.label }}
-            </option>
+            <option v-for="(info, key) in orderStatusLabels" :key="key" :value="key">{{ info.label }}</option>
           </select>
           <span class="text-sm text-gray-500">
-            Знайдено:
-            <span class="font-semibold text-gray-800">{{
-              filteredOrders.length
-            }}</span>
-            з {{ ordersStore.orders.length }}
+            Знайдено: <span class="font-semibold text-gray-800">{{ filteredOrders.length }}</span> з {{ ordersStore.orders.length }}
           </span>
         </div>
 
         <!-- Loading -->
         <div v-if="ordersStore.loading" class="space-y-3">
-          <div
-            v-for="n in 4"
-            :key="n"
-            class="bg-white rounded-2xl h-20 animate-pulse border border-gray-100"
-          ></div>
+          <div v-for="n in 4" :key="n" class="bg-white rounded-2xl h-20 animate-pulse border border-gray-100"></div>
         </div>
 
         <!-- Empty -->
-        <div
-          v-else-if="filteredOrders.length === 0"
-          class="text-center py-16 bg-white rounded-2xl border border-gray-100"
-        >
+        <div v-else-if="filteredOrders.length === 0" class="text-center py-16 bg-white rounded-2xl border border-gray-100">
           <div class="text-5xl mb-3">📦</div>
           <p class="text-gray-500">Замовлень не знайдено</p>
         </div>
 
         <!-- Orders list -->
         <div v-else class="space-y-3">
-          <div
-            v-for="order in filteredOrders"
-            :key="order.id"
-            class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
-          >
-            <!-- Order row -->
-            <div
-              class="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-gray-50 transition-colors"
-              @click="
-                expandedOrder = expandedOrder === order.id ? null : order.id
-              "
-            >
-              <div
-                class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 font-bold text-sm shrink-0"
-              >
+          <div v-for="order in filteredOrders" :key="order.id" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+            <!-- Compact row -->
+            <div class="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-gray-50 transition-colors"
+              @click="expandedOrder = expandedOrder === order.id ? null : order.id">
+
+              <!-- Order # -->
+              <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 font-extrabold text-sm shrink-0">
                 #{{ order.id }}
               </div>
+
+              <!-- Main info -->
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
-                  <span class="font-semibold text-gray-900 text-sm">{{
-                    order.customerName
-                  }}</span>
-                  <span class="text-gray-400 text-xs">{{
-                    order.customerPhone
-                  }}</span>
+                  <span class="font-semibold text-gray-900 text-sm">{{ order.customerName }}</span>
+                  <span class="text-gray-400 text-xs">{{ order.customerPhone }}</span>
                 </div>
-                <div
-                  class="flex items-center gap-2 text-xs text-gray-400 mt-0.5"
-                >
+                <div class="flex items-center gap-2 text-xs text-gray-400 mt-0.5 flex-wrap">
                   <span>{{ formatDate(order.createdAt) }}</span>
                   <span>·</span>
-                  <span>{{ order.items?.length }} товар(и)</span>
+                  <span>{{ order.items?.length }} поз.</span>
                   <span>·</span>
-                  <span class="font-semibold text-gray-700">{{
-                    formatPrice(order.total)
-                  }}</span>
+                  <span class="font-semibold text-gray-700">{{ formatPrice(order.total) }}</span>
+                  <span>·</span>
+                  <!-- Delivery badge -->
+                  <span class="inline-flex items-center gap-0.5">
+                    {{ order.deliveryMethod === 'nova_poshta' ? '📦 Нова Пошта' : order.deliveryMethod === 'ukr_poshta' ? '✉️ Укрпошта' : order.deliveryMethod === 'pickup' ? '🏪 Самовивіз' : '📦 Доставка' }}
+                  </span>
+                  <span>·</span>
+                  <!-- Payment badge -->
+                  <span :class="order.paymentMethod === 'card' ? 'text-green-600 font-semibold' : 'text-gray-500'">
+                    {{ order.paymentMethod === 'card' ? '💳 Оплачено' : '💵 Готівка' }}
+                  </span>
                 </div>
               </div>
+
               <!-- Status selector -->
-              <select
-                :value="order.status"
-                @change="changeOrderStatus(order, $event.target.value)"
-                @click.stop
-                class="px-2 py-1.5 rounded-xl border-2 border-gray-200 text-xs font-semibold focus:outline-none focus:border-orange-400 cursor-pointer"
-                :class="orderStatusLabels[order.status]?.color"
-              >
-                <option
-                  v-for="(info, key) in orderStatusLabels"
-                  :key="key"
-                  :value="key"
-                >
-                  {{ info.label }}
-                </option>
+              <select :value="order.status" @change="changeOrderStatus(order, $event.target.value)" @click.stop
+                class="px-2 py-1.5 rounded-xl border-2 border-gray-200 text-xs font-semibold focus:outline-none focus:border-orange-400 cursor-pointer shrink-0"
+                :class="orderStatusLabels[order.status]?.color">
+                <option v-for="(info, key) in orderStatusLabels" :key="key" :value="key">{{ info.label }}</option>
               </select>
-              <svg
-                class="w-4 h-4 text-gray-400 transition-transform shrink-0"
-                :class="{ 'rotate-180': expandedOrder === order.id }"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                />
+
+              <svg class="w-4 h-4 text-gray-400 transition-transform shrink-0" :class="{ 'rotate-180': expandedOrder === order.id }"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
               </svg>
             </div>
 
-            <!-- Order details -->
+            <!-- Expanded details -->
             <Transition name="fade">
-              <div
-                v-if="expandedOrder === order.id"
-                class="border-t border-gray-100 px-5 py-4 bg-gray-50"
-              >
-                <div class="grid grid-cols-2 gap-3 text-sm mb-4">
-                  <div>
-                    <p class="text-gray-400 text-xs mb-0.5">Email</p>
-                    <p class="font-medium">{{ order.customerEmail || "—" }}</p>
+              <div v-if="expandedOrder === order.id" class="border-t border-gray-100 bg-gray-50">
+
+                <!-- ── Shipping card ── -->
+                <div class="px-5 py-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+
+                  <!-- Recipient -->
+                  <div class="bg-white rounded-xl p-4 border border-gray-100">
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-2">👤 Отримувач</p>
+                    <p class="font-bold text-gray-900 text-sm">{{ order.customerName }}</p>
+                    <p class="text-gray-600 text-xs mt-1">{{ order.customerPhone }}</p>
+                    <p class="text-gray-500 text-xs">{{ order.customerEmail || '—' }}</p>
                   </div>
-                  <div>
-                    <p class="text-gray-400 text-xs mb-0.5">Адреса</p>
-                    <p class="font-medium">
-                      {{ order.city }}, {{ order.address }}
+
+                  <!-- Delivery -->
+                  <div class="bg-white rounded-xl p-4 border border-gray-100">
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-2">🚚 Доставка</p>
+                    <p class="font-bold text-gray-900 text-sm">
+                      {{ order.deliveryMethod === 'nova_poshta' ? 'Нова Пошта' : order.deliveryMethod === 'ukr_poshta' ? 'Укрпошта' : order.deliveryMethod === 'pickup' ? 'Самовивіз' : 'Доставка' }}
                     </p>
-                  </div>
-                  <div v-if="order.comment" class="col-span-2">
-                    <p class="text-gray-400 text-xs mb-0.5">Коментар</p>
-                    <p class="font-medium">{{ order.comment }}</p>
-                  </div>
-                </div>
-                <div class="space-y-2">
-                  <div
-                    v-for="item in order.items"
-                    :key="`${item.id}-${item.size}`"
-                    class="flex items-center gap-3 bg-white rounded-xl p-2"
-                  >
-                    <img
-                      :src="item.image"
-                      :alt="item.name"
-                      class="w-10 h-10 rounded-lg object-cover shrink-0"
-                    />
-                    <div class="flex-1 min-w-0">
-                      <p class="text-sm font-semibold text-gray-800 truncate">
-                        {{ item.brand }} {{ item.name }}
-                      </p>
-                      <p class="text-xs text-gray-500">
-                        Розмір {{ item.size }} · {{ item.quantity }} шт
-                      </p>
+                    <p class="text-gray-700 text-xs mt-1 font-semibold">{{ order.city }}</p>
+                    <p class="text-gray-500 text-xs">{{ order.address }}</p>
+                    <div v-if="order.comment" class="mt-2 pt-2 border-t border-gray-100">
+                      <p class="text-[10px] text-gray-400 uppercase font-semibold">Коментар</p>
+                      <p class="text-xs text-gray-600 mt-0.5">{{ order.comment }}</p>
                     </div>
-                    <span class="text-sm font-bold text-gray-900 shrink-0">{{
-                      formatPrice(item.price * item.quantity)
-                    }}</span>
+                  </div>
+
+                  <!-- Payment -->
+                  <div class="bg-white rounded-xl p-4 border border-gray-100">
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-2">💳 Оплата</p>
+                    <div v-if="order.paymentMethod === 'card'" class="flex items-center gap-2 mb-1">
+                      <span class="w-2 h-2 rounded-full bg-green-500 shrink-0"></span>
+                      <span class="font-bold text-green-700 text-sm">Оплачено карткою</span>
+                    </div>
+                    <div v-else class="flex items-center gap-2 mb-1">
+                      <span class="w-2 h-2 rounded-full bg-yellow-400 shrink-0"></span>
+                      <span class="font-bold text-yellow-700 text-sm">Готівка при отриманні</span>
+                    </div>
+                    <div class="mt-3 pt-2 border-t border-gray-100">
+                      <p class="text-[11px] text-gray-400 uppercase font-semibold">Сума до отримання</p>
+                      <p class="text-xl font-extrabold mt-0.5" :class="order.paymentMethod === 'card' ? 'text-green-600 line-through opacity-50' : 'text-orange-500'">
+                        {{ formatPrice(order.total) }}
+                      </p>
+                      <p v-if="order.paymentMethod === 'card'" class="text-xs text-green-600 font-semibold -mt-1">вже сплачено</p>
+                    </div>
                   </div>
                 </div>
+
+                <!-- ── Items list ── -->
+                <div class="px-5 pb-4">
+                  <p class="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-2">📦 Склад замовлення ({{ order.items?.length }} поз.)</p>
+                  <div class="space-y-2">
+                    <div v-for="item in order.items" :key="`${item.id}-${item.size}`"
+                      class="flex items-center gap-3 bg-white rounded-xl p-3 border border-gray-100">
+                      <img :src="item.image" :alt="item.name" class="w-12 h-12 rounded-lg object-cover shrink-0"/>
+                      <div class="flex-1 min-w-0">
+                        <p class="text-sm font-bold text-gray-800">{{ item.brand }} {{ item.name }}</p>
+                        <div class="flex items-center gap-3 mt-0.5">
+                          <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-semibold">EU {{ item.size }}</span>
+                          <span class="text-xs text-gray-500">{{ item.quantity }} шт × {{ formatPrice(item.price) }}</span>
+                        </div>
+                      </div>
+                      <span class="text-sm font-extrabold text-gray-900 shrink-0">{{ formatPrice(item.price * item.quantity) }}</span>
+                    </div>
+                  </div>
+
+                  <!-- Total row -->
+                  <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-200">
+                    <div class="text-sm text-gray-500">
+                      Доставка: <span class="text-green-600 font-semibold">Безкоштовно</span>
+                    </div>
+                    <div class="text-right">
+                      <span class="text-xs text-gray-400 block">Разом до сплати</span>
+                      <span class="text-2xl font-extrabold text-orange-500">{{ formatPrice(order.total) }}</span>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </Transition>
           </div>
@@ -1132,7 +1215,199 @@ onMounted(async () => {
           </div>
         </div>
       </div>
+
+      <!-- === MESSAGES TAB === -->
+      <div v-if="activeTab === 'messages'">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="text-xl font-bold text-gray-900">
+            Повідомлення від користувачів
+            <span v-if="messagesStore.unreadCount > 0" class="ml-2 text-sm font-normal text-red-500">
+              {{ messagesStore.unreadCount }} непрочитаних
+            </span>
+          </h2>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="messagesStore.loading" class="space-y-3">
+          <div v-for="n in 3" :key="n" class="bg-white rounded-2xl h-20 animate-pulse border border-gray-100"></div>
+        </div>
+
+        <!-- Empty -->
+        <div v-else-if="messagesStore.messages.length === 0" class="text-center py-16 bg-white rounded-2xl border border-gray-100">
+          <div class="text-5xl mb-3">✉️</div>
+          <p class="text-gray-500">Повідомлень ще немає</p>
+        </div>
+
+        <!-- Messages list -->
+        <div v-else class="space-y-3">
+          <div
+            v-for="msg in messagesStore.messages"
+            :key="msg.id"
+            class="bg-white rounded-2xl shadow-sm border overflow-hidden transition-all"
+            :class="msg.read ? 'border-gray-100' : 'border-orange-200 shadow-orange-100'"
+          >
+            <div class="flex items-start gap-4 px-5 py-4">
+              <!-- Unread dot -->
+              <div class="shrink-0 mt-1">
+                <div
+                  class="w-2.5 h-2.5 rounded-full mt-1"
+                  :class="msg.read ? 'bg-gray-200' : 'bg-orange-500'"
+                ></div>
+              </div>
+              <!-- Content -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-3 flex-wrap mb-1">
+                  <span class="font-semibold text-gray-900">{{ msg.name }}</span>
+                  <span v-if="msg.email" class="text-xs text-gray-400">{{ msg.email }}</span>
+                  <span v-if="msg.phone" class="text-xs text-gray-400">{{ msg.phone }}</span>
+                  <span class="text-xs text-gray-300 ml-auto">{{ formatDate(msg.createdAt) }}</span>
+                </div>
+                <p class="text-sm text-gray-700 whitespace-pre-wrap">{{ msg.text }}</p>
+              </div>
+              <!-- Actions -->
+              <div class="flex items-center gap-1 shrink-0">
+                <button
+                  v-if="!msg.read"
+                  @click="messagesStore.markAsRead(msg.id)"
+                  class="p-1.5 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-lg transition-colors"
+                  title="Позначити як прочитане"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </button>
+                <button
+                  @click="messagesStore.deleteMessage(msg.id)"
+                  class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                  title="Видалити"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Write to client modal -->
+    <Transition name="fade">
+      <div
+        v-if="showWriteModal"
+        class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+        @click.self="showWriteModal = false"
+      >
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+          <!-- Header -->
+          <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/>
+              </svg>
+              <h3 class="text-lg font-bold text-gray-900">Написати клієнту</h3>
+            </div>
+            <button @click="showWriteModal = false" class="text-gray-400 hover:text-gray-600 transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Body -->
+          <div class="px-6 py-5">
+            <Transition name="fade" mode="out-in">
+              <!-- Success state -->
+              <div v-if="writeSent" key="sent" class="text-center py-6">
+                <div class="text-5xl mb-3">✅</div>
+                <p class="text-lg font-semibold text-gray-900 mb-1">Повідомлення надіслано!</p>
+                <p class="text-sm text-gray-500 mb-5">Клієнт отримає ваше повідомлення.</p>
+                <div class="flex gap-3">
+                  <button
+                    @click="writeSent = false; writeForm = { userId: '', email: '', text: '' }"
+                    class="flex-1 py-2.5 border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors text-sm"
+                  >
+                    Написати ще
+                  </button>
+                  <button
+                    @click="showWriteModal = false"
+                    class="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-colors text-sm"
+                  >
+                    Закрити
+                  </button>
+                </div>
+              </div>
+
+              <!-- Form -->
+              <div v-else key="form" class="space-y-4">
+                <!-- Recipient -->
+                <div>
+                  <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Отримувач</label>
+                  <select
+                    v-model="writeForm.userId"
+                    class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 text-sm text-gray-700 focus:outline-none focus:border-orange-400 bg-white"
+                  >
+                    <option value="">— Вибрати клієнта зі списку —</option>
+                    <option
+                      v-for="u in allUsers"
+                      :key="u.id"
+                      :value="String(u.id)"
+                    >
+                      {{ u.name }} ({{ u.email }})
+                    </option>
+                  </select>
+                  <div class="flex items-center gap-2 mt-2">
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                    <span class="text-xs text-gray-400">або вручну</span>
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                  </div>
+                  <input
+                    v-model="writeForm.email"
+                    :disabled="!!writeForm.userId"
+                    type="email"
+                    placeholder="email клієнта"
+                    class="mt-2 w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 text-sm focus:outline-none focus:border-orange-400 disabled:bg-gray-50 disabled:text-gray-400"
+                  />
+                </div>
+
+                <!-- Message -->
+                <div>
+                  <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Повідомлення *</label>
+                  <textarea
+                    v-model="writeForm.text"
+                    rows="5"
+                    placeholder="Текст вашого повідомлення..."
+                    class="w-full px-4 py-2.5 rounded-xl border-2 border-gray-200 text-sm focus:outline-none focus:border-orange-400 resize-none"
+                  ></textarea>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3 pt-1">
+                  <button
+                    @click="showWriteModal = false"
+                    class="flex-1 py-2.5 border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors text-sm"
+                  >
+                    Скасувати
+                  </button>
+                  <button
+                    @click="sendToClient"
+                    :disabled="writeSending || (!writeForm.userId && !writeForm.email) || !writeForm.text.trim()"
+                    class="flex-1 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition-colors text-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    <svg v-if="writeSending" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                    </svg>
+                    {{ writeSending ? "Відправка..." : "Надіслати" }}
+                  </button>
+                </div>
+              </div>
+            </Transition>
+          </div>
+        </div>
+      </div>
+    </Transition>
 
     <!-- Delete confirm dialog -->
     <Transition name="fade">

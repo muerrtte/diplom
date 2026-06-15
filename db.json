@@ -2,10 +2,10 @@
   "products": [
     {
       "id": 1,
-      "name": "Air Max 270",
+      "name": "Air Zoom Pegasus 40",
       "brand": "Nike",
-      "price": 4299,
-      "oldPrice": 5200,
+      "price": 5799,
+      "oldPrice": null,
       "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
       "category": "running",
       "sizes": [
@@ -16,29 +16,29 @@
         42,
         43,
         44,
-        45
+        45,
+        46
       ],
-      "description": "Nike Air Max 270 вЂ” СЂРµРІРѕР»СЋС†С–Р№РЅС– РєСЂРѕСЃС–РІРєРё Р· РЅР°Р№Р±С–Р»СЊС€РѕСЋ РїРѕРІС–С‚СЂСЏРЅРѕСЋ РїС–РґРѕС€РІРѕСЋ СЃРµСЂРµРґ СѓСЃС–С… РјРѕРґРµР»РµР№ Air Max. 270-РіСЂР°РґСѓСЃРЅР° РїРѕРІС–С‚СЂСЏРЅР° РєР°РјРµСЂР° Р·Р°Р±РµР·РїРµС‡СѓС” РІРёРґР°С‚РЅРёР№ РєРѕРјС„РѕСЂС‚ РїСЂРѕС‚СЏРіРѕРј СѓСЃСЊРѕРіРѕ РґРЅСЏ. Р’РµСЂС… РІРёРєРѕРЅР°РЅРѕ Р· Р»РµРіРєРѕРіРѕ С‚РµРєСЃС‚РёР»СЋ, С‰Рѕ Р·Р°Р±РµР·РїРµС‡СѓС” С†РёСЂРєСѓР»СЏС†С–СЋ РїРѕРІС–С‚СЂСЏ С‚Р° РіРЅСѓС‡РєС–СЃС‚СЊ.",
+      "description": "Nike Air Zoom Pegasus 40 — флагманська бігова кросівка Nike. Реагуюча пінка React та вбудована пластина забезпечують пружний крок і стабільність на будь-якому покритті. Ідеальна для щоденних тренувань і забігів.",
       "rating": 4.8,
-      "reviewsCount": 124,
-      "inStock": false,
+      "reviewsCount": 412,
+      "inStock": true,
       "isNew": false,
-      "isSale": true,
-      "gender": "unisex",
+      "isSale": false,
+      "gender": "male",
       "colors": [
-        "Р§РѕСЂРЅРёР№",
-        "Р‘С–Р»РёР№",
-        "Р§РµСЂРІРѕРЅРёР№"
-      ],
-      "stock": 0
+        "Білий/Чорний",
+        "Синій/Помаранчевий",
+        "Чорний"
+      ]
     },
     {
       "id": 2,
-      "name": "Ultraboost 22",
+      "name": "Ultraboost 23",
       "brand": "Adidas",
-      "price": 5499,
+      "price": 6499,
       "oldPrice": null,
-      "image": "https://images.unsplash.com/photo-1639572604550-7b958a14eaa9?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1580902394724-b08ff9ba7e8a?w=600&q=80",
       "category": "running",
       "sizes": [
         39,
@@ -49,30 +49,285 @@
         44,
         45
       ],
-      "description": "Adidas Ultraboost 22 вЂ” РЅР°Р№РїРѕРїСѓР»СЏСЂРЅС–С€С– Р±С–РіРѕРІС– РєСЂРѕСЃС–РІРєРё Сѓ СЃРІС–С‚С–. РўРµС…РЅРѕР»РѕРіС–СЏ BOOST Р·Р°Р±РµР·РїРµС‡СѓС” РјР°РєСЃРёРјР°Р»СЊРЅРµ РїРѕРІРµСЂРЅРµРЅРЅСЏ РµРЅРµСЂРіС–С— РїСЂРё РєРѕР¶РЅРѕРјСѓ РєСЂРѕС†С–. РђРґР°РїС‚РёРІРЅРёР№ РІРµСЂС… Primeknit+ С–РґРµР°Р»СЊРЅРѕ РїРѕРІС‚РѕСЂСЋС” С„РѕСЂРјСѓ СЃС‚РѕРїРё.",
+      "description": "Adidas Ultraboost 23 із технологією BOOST — максимальне повернення енергії при кожному кроці. Адаптивний верх Primeknit+ ідеально охоплює стопу. Підошва Continental забезпечує зчеплення в будь-яких умовах.",
       "rating": 4.9,
-      "reviewsCount": 256,
+      "reviewsCount": 537,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Білий",
+        "Чорний",
+        "Сірий"
+      ],
+      "stock": 17
+    },
+    {
+      "id": 3,
+      "name": "Fresh Foam X 1080v13",
+      "brand": "New Balance",
+      "price": 5999,
+      "oldPrice": 6800,
+      "image": "https://images.unsplash.com/photo-1621315271772-28b1f3a5df87?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "New Balance Fresh Foam X 1080v13 — преміальна бігова кросівка з ультраплюшевою підошвою Fresh Foam X. Забезпечує розкішний амортизуючий крок для довгих дистанцій і відновлювальних пробіжок.",
+      "rating": 4.7,
+      "reviewsCount": 289,
+      "inStock": true,
+      "isNew": false,
+      "isSale": true,
+      "gender": "unisex",
+      "colors": [
+        "Темно-синій",
+        "Білий/Сірий",
+        "Чорний/Рожевий"
+      ],
+      "stock": 15
+    },
+    {
+      "id": 4,
+      "name": "Gel-Kayano 30",
+      "brand": "Asics",
+      "price": 5499,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1575456456278-936c89ccdb7b?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Asics Gel-Kayano 30 — ювілейна модель легендарної лінійки з підтримкою пронації. Технологія GEL у п'яті та носку поглинає удари. FF BLAST+ Eco пінка забезпечує легкість та амортизацію.",
+      "rating": 4.8,
+      "reviewsCount": 196,
       "inStock": true,
       "isNew": true,
       "isSale": false,
       "gender": "male",
       "colors": [
-        "Р‘С–Р»РёР№",
-        "Р§РѕСЂРЅРёР№",
-        "РЎС–СЂРёР№"
+        "Синій/Білий",
+        "Чорний/Жовтий",
+        "Срібний"
       ],
-      "stock": 13
+      "stock": 12
     },
     {
-      "id": 3,
-      "name": "RS-XВі Puzzle",
-      "brand": "Puma",
-      "price": 3199,
-      "oldPrice": 3800,
-      "image": "https://images.unsplash.com/photo-1715692280042-a973f8d9ac95?w=600&q=80",
-      "category": "casual",
+      "id": 5,
+      "name": "Triumph 21",
+      "brand": "Saucony",
+      "price": 5299,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1584539696499-bff0b4768e4e?w=600&q=80",
+      "category": "running",
       "sizes": [
-        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Saucony Triumph 21 — максимальна амортизація для довгих тренувань. Пінка PWRRUN+ дає неймовірний комфорт. Широка підошва та надійне зчеплення роблять цю модель ідеальною для марафону.",
+      "rating": 4.7,
+      "reviewsCount": 143,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Білий/Чорний",
+        "Блакитний",
+        "Оливковий"
+      ],
+      "stock": 18
+    },
+    {
+      "id": 6,
+      "name": "Clifton 9",
+      "brand": "Hoka",
+      "price": 4999,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1676767720609-c76265fb3074?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Hoka Clifton 9 — культова надм'яка бігова кросівка з підвищеною підошвою. Єдиний шматок пінки EVA дає неперевершений комфорт. Легка конструкція підходить для щоденного бігу будь-якого темпу.",
+      "rating": 4.9,
+      "reviewsCount": 378,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Блакитний/Помаранчевий",
+        "Чорний",
+        "Білий/Рожевий"
+      ],
+      "stock": 25
+    },
+    {
+      "id": 7,
+      "name": "Ghost 15",
+      "brand": "Brooks",
+      "price": 4799,
+      "oldPrice": 5200,
+      "image": "https://images.unsplash.com/photo-1602560915003-3688d3497962?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Brooks Ghost 15 — надійна бігова кросівка для нейтральних бігунів. Оновлена пінка DNA LOFT v3 забезпечує плавний перекат. Підходить як для асфальту, так і для доріжки.",
+      "rating": 4.6,
+      "reviewsCount": 221,
+      "inStock": true,
+      "isNew": false,
+      "isSale": true,
+      "gender": "male",
+      "colors": [
+        "Зелений/Білий",
+        "Чорний/Сірий",
+        "Синій"
+      ],
+      "stock": 10
+    },
+    {
+      "id": 8,
+      "name": "React Infinity Run 4",
+      "brand": "Nike",
+      "price": 5299,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Nike React Infinity Run 4 створена для зниження ризику травм. Широка підошва з пінкою React забезпечує стабільність і пружність. Розширений язичок полегшує взування і дає відчуття «шкарпетки».",
+      "rating": 4.7,
+      "reviewsCount": 167,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Білий/Блакитний",
+        "Чорний/Помаранчевий",
+        "Рожевий"
+      ],
+      "stock": 16
+    },
+    {
+      "id": 9,
+      "name": "Gel-Nimbus 25",
+      "brand": "Asics",
+      "price": 6299,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1596182883210-b7d32c0344a0?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Asics Gel-Nimbus 25 — преміальна амортизуюча кросівка для нейтральних бігунів. Подвійне розміщення GEL поглинає удари спереду і ззаду. FF BLAST+ Eco пінка — легша і стійкіша до стиснення.",
+      "rating": 4.8,
+      "reviewsCount": 304,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Чорний/Червоний",
+        "Синій/Срібний",
+        "Білий"
+      ],
+      "stock": 14
+    },
+    {
+      "id": 10,
+      "name": "Velocity Nitro 3",
+      "brand": "Puma",
+      "price": 3999,
+      "oldPrice": 4700,
+      "image": "https://images.unsplash.com/photo-1715711169869-148ad11c6e30?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Puma Velocity Nitro 3 з азотною пінкою NITRO — максимальний баланс між амортизацією та відгуком. Тонкий і легкий верх забезпечує вентиляцію. Відмінний вибір для тренувань у середньому темпі.",
+      "rating": 4.5,
+      "reviewsCount": 112,
+      "inStock": true,
+      "isNew": false,
+      "isSale": true,
+      "gender": "unisex",
+      "colors": [
+        "Чорний/Жовтий",
+        "Білий/Синій",
+        "Зелений"
+      ],
+      "stock": 22
+    },
+    {
+      "id": 11,
+      "name": "Kinvara 14",
+      "brand": "Saucony",
+      "price": 3699,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1676767728793-a16c722eb2ca?w=600&q=80",
+      "category": "running",
+      "sizes": [
         38,
         39,
         40,
@@ -81,29 +336,156 @@
         43,
         44
       ],
-      "description": "Puma RS-XВі вЂ” СЏСЃРєСЂР°РІС– С‚Р° СЃС‚РёР»СЊРЅС– РєСЂРѕСЃС–РІРєРё РІ СЂРµС‚СЂРѕ-СЃРїРѕСЂС‚РёРІРЅРѕРјСѓ СЃС‚РёР»С–. РњР°СЃРёРІРЅР° РїС–РґРѕС€РІР° С‚Р° Р±Р°РіР°С‚РѕС€Р°СЂРѕРІРёР№ РІРµСЂС… СЂРѕР±Р»СЏС‚СЊ С—С… СЃРїСЂР°РІР¶РЅС–Рј fashion-statement. Р†РґРµР°Р»СЊРЅРёР№ РІРёР±С–СЂ РґР»СЏ С‚РёС…, С…С‚Рѕ С†С–РЅСѓС” СЃРјС–Р»РёРІРёР№ СЃС‚РёР»СЊ.",
+      "description": "Saucony Kinvara 14 — легка та швидка бігова кросівка для темпових тренувань. Оновлена пінка PWRRUN+ при мінімальній вазі дає відмінну реакцію. Ідеальна для інтервалів і перегонів.",
+      "rating": 4.6,
+      "reviewsCount": 88,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Помаранчевий/Білий",
+        "Чорний",
+        "Синій/Жовтий"
+      ],
+      "stock": 19
+    },
+    {
+      "id": 12,
+      "name": "HOVR Phantom 3",
+      "brand": "Under Armour",
+      "price": 4499,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1635770997779-8ec3396088a5?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Under Armour HOVR Phantom 3 із технологією HOVR — нульова гравітація для стоп. Вбудований чіп UA MapMyRun відстежує метрики бігу. Ідеальна для бігунів, що прагнуть покращити техніку.",
       "rating": 4.5,
-      "reviewsCount": 89,
+      "reviewsCount": 95,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Чорний",
+        "Сірий/Помаранчевий",
+        "Білий/Синій"
+      ],
+      "stock": 11
+    },
+    {
+      "id": 13,
+      "name": "Solar Glide 6",
+      "brand": "Adidas",
+      "price": 4299,
+      "oldPrice": 5100,
+      "image": "https://images.unsplash.com/photo-1691067951700-138ca8f4841f?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Adidas Solar Glide 6 поєднує технології BOOST і Torsion System для стабільного та амортизованого кроку. Прогнозована підтримка арки стопи. Відмінна для темпових тренувань і змагань.",
+      "rating": 4.5,
+      "reviewsCount": 76,
       "inStock": true,
       "isNew": false,
       "isSale": true,
-      "gender": "unisex",
+      "gender": "male",
       "colors": [
-        "Р‘С–Р»РёР№/Р§РµСЂРІРѕРЅРёР№",
-        "Р§РѕСЂРЅРёР№/РЎРёРЅС–Р№",
-        "Р‘С–Р»РёР№/Р–РѕРІС‚РёР№"
+        "Чорний/Синій",
+        "Білий/Помаранчевий"
       ],
-      "stock": 15
+      "stock": 8
     },
     {
-      "id": 4,
-      "name": "574 Core",
-      "brand": "New Balance",
-      "price": 3799,
+      "id": 14,
+      "name": "Zoom Structure 25",
+      "brand": "Nike",
+      "price": 4999,
       "oldPrice": null,
-      "image": "https://images.unsplash.com/photo-1539185441755-769473a23570?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Nike Air Zoom Structure 25 — стабілізуюча бігова кросівка для пронаторів. Технологія Zoom Air у носку забезпечує реактивне відштовхування. Жорстка внутрішня рамка коригує надмірну пронацію.",
+      "rating": 4.6,
+      "reviewsCount": 134,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Синій/Сріблястий",
+        "Чорний/Помаранчевий"
+      ],
+      "stock": 17
+    },
+    {
+      "id": 15,
+      "name": "860v14",
+      "brand": "New Balance",
+      "price": 4599,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1559745206-ca4056293ddc?w=600&q=80",
+      "category": "running",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "New Balance 860v14 — стабілізуюча бігова кросівка для легкої та помірної пронації. Пінка Fresh Foam X в мідсолі. Прогресивна конструкція забезпечує природний рух стопи при тренуваннях.",
+      "rating": 4.6,
+      "reviewsCount": 108,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Синій/Білий",
+        "Чорний/Сірий",
+        "Рожевий/Білий"
+      ],
+      "stock": 13
+    },
+    {
+      "id": 16,
+      "name": "Air Force 1 '07",
+      "brand": "Nike",
+      "price": 4299,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&q=80",
       "category": "casual",
       "sizes": [
+        36,
+        37,
         38,
         39,
         40,
@@ -114,7 +496,316 @@
         45,
         46
       ],
-      "description": "New Balance 574 вЂ” РєР»Р°СЃРёС‡РЅС– РєСЂРѕСЃС–РІРєРё Р· 1988 СЂРѕРєСѓ. РџРѕС”РґРЅСѓСЋС‚СЊ СЂРµС‚СЂРѕ-СЃС‚РёР»СЊ С–Р· СЃСѓС‡Р°СЃРЅРёРјРё С‚РµС…РЅРѕР»РѕРіС–СЏРјРё РєРѕРјС„РѕСЂС‚Сѓ. РџС–РґРѕС€РІР° ENCAP Р·Р°Р±РµР·РїРµС‡СѓС” РїС–РґС‚СЂРёРјРєСѓ С‚Р° Р°РјРѕСЂС‚РёР·Р°С†С–СЋ РґР»СЏ С‰РѕРґРµРЅРЅРѕРіРѕ РЅРѕСЃС–РЅРЅСЏ.",
+      "description": "Nike Air Force 1 '07 — ікона вуличного стилю з 1982 року. Класична шкіряна конструкція з амортизуючою підошвою Nike Air. Підходить до будь-якого образу — від спортивного до вечірнього.",
+      "rating": 4.9,
+      "reviewsCount": 1205,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Білий",
+        "Чорний",
+        "Чорний/Білий"
+      ],
+      "stock": 50
+    },
+    {
+      "id": 17,
+      "name": "Stan Smith",
+      "brand": "Adidas",
+      "price": 3499,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1544441892-794166f1e3be?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Adidas Stan Smith — мінімалістична класика, перевірена часом. Верх зі шкіри преміум якості, підошва з EVA пінки. Три смужки на боках та зелений каблук — впізнаваний образ на десятиліття.",
+      "rating": 4.8,
+      "reviewsCount": 876,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Білий/Зелений",
+        "Білий/Темно-синій",
+        "Білий/Чорний"
+      ],
+      "stock": 45
+    },
+    {
+      "id": 18,
+      "name": "574 Legacy",
+      "brand": "New Balance",
+      "price": 3799,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "New Balance 574 Legacy — культова модель у сучасному виконанні. Замша і нейлоновий верх, підошва ENCAP для підтримки. Неперевершений повсякденний стиль для міських прогулянок.",
+      "rating": 4.7,
+      "reviewsCount": 445,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Сірий/Білий",
+        "Темно-синій",
+        "Бордовий"
+      ],
+      "stock": 28
+    },
+    {
+      "id": 19,
+      "name": "Chuck Taylor All Star",
+      "brand": "Converse",
+      "price": 2499,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1572601809155-8a9f3191b2d9?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Converse Chuck Taylor All Star — легенда взуттєвого світу з 1917 року. Верх із полотна, підошва з натуральної гуми. Культова зірка на гомілковостопі — символ бунтарського духу та вільного стилю.",
+      "rating": 4.7,
+      "reviewsCount": 2340,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Білий",
+        "Чорний",
+        "Червоний",
+        "Темно-синій"
+      ],
+      "stock": 60
+    },
+    {
+      "id": 20,
+      "name": "Old Skool",
+      "brand": "Vans",
+      "price": 2799,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1589312866743-e043e4a6e2b9?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Vans Old Skool — перша модель Vans із фірмовою полосою Jazz Stripe. Верх із замші та полотна, підошва Waffle. Улюблена кросівка скейтерів та модників по всьому світу.",
+      "rating": 4.8,
+      "reviewsCount": 1876,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Чорний/Білий",
+        "Темно-синій/Білий",
+        "Білий"
+      ],
+      "stock": 55
+    },
+    {
+      "id": 21,
+      "name": "Dunk Low Retro",
+      "brand": "Nike",
+      "price": 4799,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1615290642882-6b9501729a27?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Nike Dunk Low Retro — повернення баскетбольної класики 1985 року у casual виконанні. Перфорована шкіра, контрастні накладки, підошва з пінки. Бажана модель для колекціонерів і любителів streetwear.",
+      "rating": 4.9,
+      "reviewsCount": 987,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Білий/Зелений",
+        "Чорний/Білий",
+        "Білий/Синій"
+      ],
+      "stock": 20
+    },
+    {
+      "id": 22,
+      "name": "Gazelle Indoor",
+      "brand": "Adidas",
+      "price": 3199,
+      "oldPrice": 3800,
+      "image": "https://images.unsplash.com/photo-1700853010051-dce31802dafc?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Adidas Gazelle Indoor — ретро-силует, натхненний залами 70-х. Замшевий верх, Т-подібне формування носка, гумова підошва. Улюблена модель у середовищі моди та музики.",
+      "rating": 4.6,
+      "reviewsCount": 321,
+      "inStock": true,
+      "isNew": false,
+      "isSale": true,
+      "gender": "unisex",
+      "colors": [
+        "Синій/Білий",
+        "Бордовий/Золотий",
+        "Зелений/Білий"
+      ],
+      "stock": 18
+    },
+    {
+      "id": 23,
+      "name": "550",
+      "brand": "New Balance",
+      "price": 4199,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1665517464780-ab4f42d8af95?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "New Balance 550 — відроджений баскетбольний силует 1989 року. Класична шкіра, контрастні панелі та фірмове \"N\". Ця модель набула культового статусу завдяки колаборації з Aime Leon Dore.",
+      "rating": 4.8,
+      "reviewsCount": 567,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Білий/Зелений",
+        "Білий/Бордовий",
+        "Кремовий/Коричневий"
+      ],
+      "stock": 22
+    },
+    {
+      "id": 24,
+      "name": "Suede Classic XXI",
+      "brand": "Puma",
+      "price": 2599,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1626298038175-e9f383124e1f?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Puma Suede Classic XXI — ікона спортивного стилю з 1968 року. Класичний замшевий верх з трьома смужками та гумова підошва. Більш як 50 років незмінної популярності серед модників.",
+      "rating": 4.6,
+      "reviewsCount": 423,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Чорний",
+        "Білий",
+        "Темно-синій/Білий"
+      ],
+      "stock": 35
+    },
+    {
+      "id": 25,
+      "name": "Club C 85",
+      "brand": "Reebok",
+      "price": 2899,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1580977252013-f5d20c3303ae?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Reebok Club C 85 — мінімалістична тенісна класика 1985 року. Шкіряний верх із легкою підошвою EVA. Фірмова нашивка на мові та класичний логотип Reebok — безтурботний міський стиль.",
       "rating": 4.7,
       "reviewsCount": 312,
       "inStock": true,
@@ -122,84 +813,19 @@
       "isSale": false,
       "gender": "unisex",
       "colors": [
-        "РЎС–СЂРёР№",
-        "РўРµРјРЅРѕ-СЃРёРЅС–Р№",
-        "Р—РµР»РµРЅРёР№"
+        "Білий/Зелений",
+        "Білий/Чорний",
+        "Рожевий/Білий"
       ],
-      "stock": 15
+      "stock": 30
     },
     {
-      "id": 5,
-      "name": "Old Skool",
-      "brand": "Vans",
-      "price": 2299,
-      "oldPrice": null,
-      "image": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=600&q=80",
-      "category": "casual",
-      "sizes": [
-        37,
-        38,
-        39,
-        40,
-        41,
-        42,
-        43,
-        44,
-        45
-      ],
-      "description": "Vans Old Skool вЂ” РєСѓР»СЊС‚РѕРІР° РјРѕРґРµР»СЊ СЃРєРµР№С‚РµСЂСЃСЊРєРёС… РєСЂРѕСЃС–РІРѕРє Р· 1977 СЂРѕРєСѓ. РҐР°СЂР°РєС‚РµСЂРЅР° Р±С–С‡РЅР° СЃРјСѓРіР° С‚Р° РјС–С†РЅР° РіСѓРјРѕРІР° РїС–РґРѕС€РІР° СЃС‚Р°Р»Рё Р»РµРіРµРЅРґР°СЂРЅРёРјРё. РљР»Р°СЃРёРєР°, С‰Рѕ РЅС–РєРѕР»Рё РЅРµ РІРёС…РѕРґРёС‚СЊ Р· РјРѕРґРё.",
-      "rating": 4.6,
-      "reviewsCount": 445,
-      "inStock": true,
-      "isNew": false,
-      "isSale": false,
-      "gender": "unisex",
-      "colors": [
-        "Р§РѕСЂРЅРёР№/Р‘С–Р»РёР№",
-        "РўРµРјРЅРѕ-СЃРёРЅС–Р№/Р‘С–Р»РёР№",
-        "РџРѕРІРЅС–СЃС‚СЋ С‡РѕСЂРЅРёР№"
-      ],
-      "stock": 15
-    },
-    {
-      "id": 6,
-      "name": "Air Force 1 '07",
-      "brand": "Nike",
-      "price": 3999,
-      "oldPrice": null,
-      "image": "https://images.unsplash.com/photo-1617659512089-6fdec6c54406?w=600&q=80",
-      "category": "casual",
-      "sizes": [
-        38,
-        39,
-        40,
-        41,
-        42,
-        43,
-        44,
-        45
-      ],
-      "description": "Nike Air Force 1 вЂ” Р»РµРіРµРЅРґР°СЂРЅС– РєСЂРѕСЃС–РІРєРё, С‰Рѕ СЃС‚Р°Р»Рё СЃРёРјРІРѕР»РѕРј РІСѓР»РёС‡РЅРѕС— РјРѕРґРё. РљР»Р°СЃРёС‡РЅРёР№ С€РєС–СЂСЏРЅРёР№ РІРµСЂС… С‚Р° С‚РµС…РЅРѕР»РѕРіС–СЏ Air РІ РїС–РґРѕС€РІС– РїРѕС”РґРЅСѓСЋС‚СЊ СЃС‚РёР»СЊ С‚Р° РєРѕРјС„РѕСЂС‚. РќРµР·Р°РјС–РЅРЅР° РєР»Р°СЃРёРєР° РґР»СЏ Р±СѓРґСЊ-СЏРєРѕРіРѕ РѕР±СЂР°Р·Сѓ.",
-      "rating": 4.9,
-      "reviewsCount": 678,
-      "inStock": true,
-      "isNew": false,
-      "isSale": false,
-      "gender": "unisex",
-      "colors": [
-        "РџРѕРІРЅС–СЃС‚СЋ Р±С–Р»РёР№",
-        "РџРѕРІРЅС–СЃС‚СЋ С‡РѕСЂРЅРёР№",
-        "Р§РѕСЂРЅРёР№/Р‘С–Р»РёР№"
-      ],
-      "stock": 15
-    },
-    {
-      "id": 7,
-      "name": "Stan Smith",
+      "id": 26,
+      "name": "Forum Low",
       "brand": "Adidas",
-      "price": 2899,
-      "oldPrice": 3500,
-      "image": "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=600&q=80",
+      "price": 3599,
+      "oldPrice": 4200,
+      "image": "https://images.unsplash.com/photo-1620794341491-76be6eeb6946?w=600&q=80",
       "category": "casual",
       "sizes": [
         37,
@@ -212,29 +838,322 @@
         44,
         45
       ],
-      "description": "Adidas Stan Smith вЂ” РјС–РЅС–РјР°Р»С–СЃС‚РёС‡РЅС– РєСЂРѕСЃС–РІРєРё, С‰Рѕ СЃС‚Р°Р»Рё С–РєРѕРЅРѕСЋ СЃС‚РёР»СЋ Р· 1971 СЂРѕРєСѓ. Р§РёСЃС‚Р° С€РєС–СЂСЏРЅР° РїРѕРІРµСЂС…РЅСЏ С‚Р° С‚СЂРё СЃРјСѓРіРё Adidas вЂ” РєР»Р°СЃРёРєР°, СЏРєР° РїРѕС”РґРЅСѓС”С‚СЊСЃСЏ Р· Р±СѓРґСЊ-СЏРєРёРј РѕР±СЂР°Р·РѕРј.",
-      "rating": 4.7,
-      "reviewsCount": 521,
+      "description": "Adidas Forum Low — відроджений баскетбольний силует 1984 року. Шкіряний верх із X-подібною рамкою гомілковостопа. Ця модель носила Beastie Boys і стала символом hip-hop культури.",
+      "rating": 4.5,
+      "reviewsCount": 198,
       "inStock": true,
       "isNew": false,
       "isSale": true,
       "gender": "unisex",
       "colors": [
-        "Р‘С–Р»РёР№/Р—РµР»РµРЅРёР№",
-        "Р‘С–Р»РёР№/РўРµРјРЅРѕ-СЃРёРЅС–Р№",
-        "РџРѕРІРЅС–СЃС‚СЋ Р±С–Р»РёР№"
+        "Білий/Синій",
+        "Чорний",
+        "Коричневий/Бежевий"
       ],
       "stock": 15
     },
     {
-      "id": 8,
-      "name": "Air Jordan 1 Retro",
+      "id": 27,
+      "name": "Sk8-Hi",
+      "brand": "Vans",
+      "price": 3199,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1603994457622-63687030478a?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Vans Sk8-Hi — висока версія улюблених скейтерських кросівок. Верх із замші та полотна, підошва Waffle для зчеплення з дошкою. Класична полоса Jazz Stripe та металеве кільце для шнурка.",
+      "rating": 4.7,
+      "reviewsCount": 534,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Чорний/Білий",
+        "Темно-синій",
+        "Шаховий"
+      ],
+      "stock": 40
+    },
+    {
+      "id": 28,
+      "name": "9060",
+      "brand": "New Balance",
+      "price": 5299,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1610630879511-3f6a23c19a02?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "New Balance 9060 — масивний dad-shoe силует із шарами різних матеріалів. Поєднання замші, нейлону та шкіри. Підошва з пінкою ABZORB у п'яті та SBS у носку для амортизації.",
+      "rating": 4.8,
+      "reviewsCount": 445,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Кремовий/Сірий",
+        "Чорний",
+        "Синій/Сірий"
+      ],
+      "stock": 18
+    },
+    {
+      "id": 29,
+      "name": "RS-X Efekt",
+      "brand": "Puma",
+      "price": 3299,
+      "oldPrice": 3900,
+      "image": "https://images.unsplash.com/photo-1680254418556-3980c19d4304?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Puma RS-X Efekt — сміливий масивний дизайн у ретро-спортивному стилі. Багатошаровий верх із різних матеріалів, масивна підошва. Яскраві колірні вставки роблять цю модель ідеальною для сміливих образів.",
+      "rating": 4.5,
+      "reviewsCount": 156,
+      "inStock": true,
+      "isNew": false,
+      "isSale": true,
+      "gender": "unisex",
+      "colors": [
+        "Білий/Червоний/Синій",
+        "Чорний/Жовтий"
+      ],
+      "stock": 12
+    },
+    {
+      "id": 30,
+      "name": "Cortez",
+      "brand": "Nike",
+      "price": 3799,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1577184474979-ec0f715605a7?w=600&q=80",
+      "category": "casual",
+      "sizes": [
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Nike Cortez — перша кросівка Nike 1972 року, яка стала символом поп-культури. Шкіряний верх із нейлоновими вставками, підошва EVA. Swoosh на боці та спадщина Форреста Гампа роблять цю кросівку легендарною.",
+      "rating": 4.6,
+      "reviewsCount": 287,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Білий/Червоний",
+        "Білий/Чорний",
+        "Білий/Синій"
+      ],
+      "stock": 24
+    },
+    {
+      "id": 31,
+      "name": "Air Jordan 1 Retro High OG",
+      "brand": "Jordan",
+      "price": 9999,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1695748966450-3abe5c25b481?w=600&q=80",
+      "category": "basketball",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Air Jordan 1 Retro High OG — та сама кросівка, яку заборонила NBA у 1985 і яка змінила все. Верх із повноцінної шкіри, підошва Air-Sole. Кожен колірний варіант — окрема глава в історії кросівок.",
+      "rating": 5,
+      "reviewsCount": 1876,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Чикаго (Червоний/Білий/Чорний)",
+        "Бредфорд (Чорний/Золотий)"
+      ],
+      "stock": 8
+    },
+    {
+      "id": 32,
+      "name": "LeBron 21",
+      "brand": "Nike",
+      "price": 7499,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1656944227421-416b1d2186c9?w=600&q=80",
+      "category": "basketball",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "description": "Nike LeBron 21 — найновіша баскетбольна кросівка Короля. Пінка Nike Air MAX у всій підошві, верх із тканини Knitposite. Максимальна амортизація та підтримка для потужних гравців.",
+      "rating": 4.7,
+      "reviewsCount": 312,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Золотий/Синій",
+        "Чорний/Червоний"
+      ],
+      "stock": 10
+    },
+    {
+      "id": 33,
+      "name": "Harden Vol. 8",
+      "brand": "Adidas",
+      "price": 6499,
+      "oldPrice": 7500,
+      "image": "https://images.unsplash.com/photo-1593287073863-c992914cb3e3?w=600&q=80",
+      "category": "basketball",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Adidas Harden Vol. 8 — розроблена разом із Джеймсом Харденом для гравців, які покладаються на дриблінг та швидкі зміни напряму. Підошва Lightstrike, боковий амортизатор BOOST. Нескінченно гнучка.",
+      "rating": 4.6,
+      "reviewsCount": 198,
+      "inStock": true,
+      "isNew": false,
+      "isSale": true,
+      "gender": "male",
+      "colors": [
+        "Чорний/Рожевий",
+        "Синій/Золотий"
+      ],
+      "stock": 12
+    },
+    {
+      "id": 34,
+      "name": "Air Jordan 4 Retro",
+      "brand": "Jordan",
+      "price": 8499,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=600&q=80",
+      "category": "basketball",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Air Jordan 4 Retro — культова модель 1989 року Тінкера Хетфілда. Видима Air-Sole в п'яті, підтримуючі крила, сіткові вставки. Найбажаніша Jordan серед колекціонерів і гравців вулиці.",
+      "rating": 4.9,
+      "reviewsCount": 765,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Military Black",
+        "Fire Red/Білий/Чорний"
+      ],
+      "stock": 6
+    },
+    {
+      "id": 35,
+      "name": "KD 17",
       "brand": "Nike",
       "price": 6999,
       "oldPrice": null,
-      "image": "https://images.unsplash.com/photo-1612092948431-3791e8884a41?w=600&q=80",
+      "image": "https://images.unsplash.com/photo-1635770997862-2b93a75f4856?w=600&q=80",
       "category": "basketball",
       "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47
+      ],
+      "description": "Nike KD 17 — нова глава баскетбольного взуття Кевіна Дюранта. Легка конструкція з пінкою Zoom Air, низький профіль. Ідеально для швидких та технічних гравців, які цінують чутливість підошви.",
+      "rating": 4.7,
+      "reviewsCount": 145,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Чорний/Зелений",
+        "Синій/Срібний"
+      ],
+      "stock": 9
+    },
+    {
+      "id": 36,
+      "name": "Dame 9",
+      "brand": "Adidas",
+      "price": 5999,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1610945102998-749b4a3d798c?w=600&q=80",
+      "category": "basketball",
+      "sizes": [
+        39,
         40,
         41,
         42,
@@ -243,28 +1162,185 @@
         45,
         46
       ],
-      "description": "Air Jordan 1 Retro вЂ” Р»РµРіРµРЅРґР°СЂРЅС– Р±Р°СЃРєРµС‚Р±РѕР»СЊРЅС– РєСЂРѕСЃС–РІРєРё РњР°Р№РєР»Р° Р”Р¶РѕСЂРґР°РЅР° Р· 1985 СЂРѕРєСѓ. РљР»Р°СЃРёС‡РЅРёР№ РґРёР·Р°Р№РЅ Р· РІРёСЂР°Р·РЅРёРј swoosh С‚Р° С…Р°СЂР°РєС‚РµСЂРЅРёРј Р·Р°Р±Р°СЂРІР»РµРЅРЅСЏРј СЃС‚Р°РІ СЃРёРјРІРѕР»РѕРј РїРѕРї-РєСѓР»СЊС‚СѓСЂРё С‚Р° РІСѓР»РёС‡РЅРѕРіРѕ СЃС‚РёР»СЋ.",
-      "rating": 5,
-      "reviewsCount": 892,
+      "description": "Adidas Dame 9 — підпис-кросівки Деміана Ліллара. Підошва з LIGHTSTRIKE PRO для швидкого відгуку, верх з Fitcounterом у п'яті. Для гравців, які виконують гострі рухи від маркера.",
+      "rating": 4.6,
+      "reviewsCount": 167,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Чорний/Золотий",
+        "Білий/Синій"
+      ],
+      "stock": 11
+    },
+    {
+      "id": 37,
+      "name": "MB.03 LaFrance",
+      "brand": "Puma",
+      "price": 7299,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1680254418818-0d9f606e035e?w=600&q=80",
+      "category": "basketball",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Puma MB.03 — підписна кросівка LaMelo Ball. Масивна підошва з NITRO пінкою, верх із тканини Dyneema. Футуристичний дизайн та провокаційні кольори стали фішкою Мело.",
+      "rating": 4.7,
+      "reviewsCount": 234,
       "inStock": true,
       "isNew": true,
       "isSale": false,
       "gender": "male",
       "colors": [
-        "Р§РѕСЂРЅРёР№/Р§РµСЂРІРѕРЅРёР№",
-        "Р‘С–Р»РёР№/РЎРёРЅС–Р№",
-        "Р§РѕСЂРЅРёР№/Р‘С–Р»РёР№"
+        "Золотий/Фіолетовий",
+        "Чорний/Срібний"
       ],
-      "stock": 15
+      "stock": 7
     },
     {
-      "id": 9,
-      "name": "Dunk Low",
+      "id": 38,
+      "name": "Air Jordan 11 Retro",
+      "brand": "Jordan",
+      "price": 10499,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1661324257527-ce9379163e1b?w=600&q=80",
+      "category": "basketball",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Air Jordan 11 Retro — Майкл Джордан виграв у них 2 чемпіонати. Лакована накладка, верх із ліцензованої сітки. Full-length Air Sole. Найпопулярніший реліз Jordan Brand кожного сезону.",
+      "rating": 5,
+      "reviewsCount": 2134,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Concord (Чорний/Фіолетовий)",
+        "Cool Grey"
+      ],
+      "stock": 5
+    },
+    {
+      "id": 39,
+      "name": "Curry 11",
+      "brand": "Under Armour",
+      "price": 5799,
+      "oldPrice": 6500,
+      "image": "https://images.unsplash.com/photo-1604726923839-606d2f0e0870?w=600&q=80",
+      "category": "basketball",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Under Armour Curry 11 — розроблена зі Стефом Каррі для точних стрільців. Технологія UA Flow для плавних переміщень, вставки HOVR для пружності. Для снайперів, які рухаються без зупинки.",
+      "rating": 4.6,
+      "reviewsCount": 178,
+      "inStock": true,
+      "isNew": false,
+      "isSale": true,
+      "gender": "male",
+      "colors": [
+        "Синій/Золотий",
+        "Чорний",
+        "Білий/Синій"
+      ],
+      "stock": 13
+    },
+    {
+      "id": 40,
+      "name": "Kyrie Infinity 2",
       "brand": "Nike",
+      "price": 5499,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1530511250146-026c208e059e?w=600&q=80",
+      "category": "basketball",
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Nike Kyrie Infinity 2 — найбільш технічна кросівка для підлоги. Zoom Air у носку для вибухового старту, мультиспрямовані нарізи підошви. Для гравців, що ставлять на дриблінг та зміну темпу.",
+      "rating": 4.7,
+      "reviewsCount": 213,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Чорний/Бірюзовий",
+        "Білий/Фіолетовий"
+      ],
+      "stock": 14
+    },
+    {
+      "id": 41,
+      "name": "Metcon 9",
+      "brand": "Nike",
+      "price": 4999,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1605408499391-6368c628ef42?w=600&q=80",
+      "category": "training",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Nike Metcon 9 — найпопулярніша кросівка для CrossFit та силових тренувань. Жорстка плоска підошва з вставкою Hyperlift у п'яті для присідань. Верх Hyper Rope підходить для лазіння по канату.",
+      "rating": 4.8,
+      "reviewsCount": 456,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Чорний",
+        "Білий/Сірий",
+        "Синій/Помаранчевий"
+      ],
+      "stock": 25
+    },
+    {
+      "id": 42,
+      "name": "Nano X4",
+      "brand": "Reebok",
       "price": 4599,
-      "oldPrice": 5100,
-      "image": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&q=80",
-      "category": "casual",
+      "oldPrice": 5200,
+      "image": "https://images.unsplash.com/photo-1580977251946-c5f692a4db0d?w=600&q=80",
+      "category": "training",
       "sizes": [
         38,
         39,
@@ -275,28 +1351,28 @@
         44,
         45
       ],
-      "description": "Nike Dunk Low вЂ” РєСЂРѕСЃС–РІРєРё Р· Р±Р°СЃРєРµС‚Р±РѕР»СЊРЅРёРјРё РєРѕСЂРµРЅСЏРјРё С‚Р° РІСѓР»РёС‡РЅРѕСЋ РґСѓС€РµСЋ. Р§РёСЃС‚РёР№, РєР»Р°СЃРёС‡РЅРёР№ РґРёР·Р°Р№РЅ Сѓ РїРѕС”РґРЅР°РЅРЅС– Р· СЏРєС–СЃРЅРёРјРё РјР°С‚РµСЂС–Р°Р»Р°РјРё. РћРґРёРЅ Р· РЅР°Р№Р±Р°Р¶Р°РЅС–С€РёС… СЃРёР»СѓРµС‚С–РІ Сѓ СЃСѓС‡Р°СЃРЅС–Р№ РєСѓР»СЊС‚СѓСЂС– РєСЂРѕСЃС–РІРѕРє.",
-      "rating": 4.8,
-      "reviewsCount": 334,
-      "inStock": false,
+      "description": "Reebok Nano X4 — пропрацьована для CrossFit, але підходить для будь-яких тренувань. Підошва Flexweave для стабільності при важких підйомах. Floatride Energy Foam для пом'якшення при стрибках.",
+      "rating": 4.7,
+      "reviewsCount": 267,
+      "inStock": true,
       "isNew": false,
       "isSale": true,
       "gender": "unisex",
       "colors": [
-        "Р§РѕСЂРЅРёР№/Р‘С–Р»РёР№",
-        "РЈРЅС–РІРµСЂСЃРёС‚РµС‚СЃСЊРєРёР№ С‡РµСЂРІРѕРЅРёР№",
-        "Р—РµР»РµРЅРёР№ РїР»СЋС‰"
+        "Чорний",
+        "Білий/Синій",
+        "Сірий/Помаранчевий"
       ],
-      "stock": 0
+      "stock": 20
     },
     {
-      "id": 10,
-      "name": "Gel-Kayano 29",
-      "brand": "ASICS",
-      "price": 5799,
+      "id": 43,
+      "name": "Dropset 3",
+      "brand": "Adidas",
+      "price": 4299,
       "oldPrice": null,
-      "image": "https://images.unsplash.com/photo-1575456571326-2a5c7478aeb2?w=600&q=80",
-      "category": "running",
+      "image": "https://images.unsplash.com/photo-1546200843-d3a4e1e0103d?w=600&q=80",
+      "category": "training",
       "sizes": [
         38,
         39,
@@ -308,59 +1384,58 @@
         45,
         46
       ],
-      "description": "ASICS Gel-Kayano 29 вЂ” РїСЂРµРјС–Р°Р»СЊРЅС– Р±С–РіРѕРІС– РєСЂРѕСЃС–РІРєРё РґР»СЏ РґРѕРІРіРёС… РґРёСЃС‚Р°РЅС†С–Р№. РўРµС…РЅРѕР»РѕРіС–СЏ GELв„ў РІ Рї'СЏС‚С– С‚Р° РїРµСЂРµРґРЅС–Р№ С‡Р°СЃС‚РёРЅС– Р·Р°Р±РµР·РїРµС‡СѓС” С‡СѓРґРѕРІСѓ Р°РјРѕСЂС‚РёР·Р°С†С–СЋ. Р†РґРµР°Р»СЊРЅРёР№ РІРёР±С–СЂ РґР»СЏ РјР°СЂР°С„РѕРЅС–РІ С‚Р° С‚СЂРёРІР°Р»РёС… С‚СЂРµРЅСѓРІР°РЅСЊ.",
-      "rating": 4.7,
-      "reviewsCount": 167,
+      "description": "Adidas Dropset 3 — спеціалізована для атлетичних тренувань і важкої атлетики. Розширена п'ята забезпечує стабільність під час присідань. Верх із EWB (Engineered Webbing) для легкості та вентиляції.",
+      "rating": 4.6,
+      "reviewsCount": 134,
       "inStock": true,
-      "isNew": true,
+      "isNew": false,
       "isSale": false,
       "gender": "male",
       "colors": [
-        "РЎРёРЅС–Р№/Р–РѕРІС‚РёР№",
-        "Р§РѕСЂРЅРёР№/РџРѕРјР°СЂР°РЅС‡РµРІРёР№",
-        "РЎС–СЂРёР№/Р‘С–Р»РёР№"
+        "Чорний/Білий",
+        "Сірий/Синій"
       ],
-      "stock": 15
+      "stock": 17
     },
     {
-      "id": 11,
-      "name": "Classic Leather",
-      "brand": "Reebok",
-      "price": 2599,
-      "oldPrice": 3200,
-      "image": "https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?w=600&q=80",
-      "category": "casual",
+      "id": 44,
+      "name": "Fuse 3.0",
+      "brand": "Puma",
+      "price": 3799,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1680254418652-7ffe87e6955a?w=600&q=80",
+      "category": "training",
       "sizes": [
-        37,
         38,
         39,
         40,
         41,
         42,
         43,
-        44
+        44,
+        45
       ],
-      "description": "Reebok Classic Leather вЂ” РІС–С‡РЅР° РєР»Р°СЃРёРєР° Р· 1983 СЂРѕРєСѓ. Рњ'СЏРєР° РЅР°С‚СѓСЂР°Р»СЊРЅР° С€РєС–СЂР° С‚Р° Р»РµРіРєР° РїС–РґРѕС€РІР° EVA Р·Р°Р±РµР·РїРµС‡СѓСЋС‚СЊ РєРѕРјС„РѕСЂС‚ РїСЂРѕС‚СЏРіРѕРј СѓСЃСЊРѕРіРѕ РґРЅСЏ. РџСЂРѕСЃС‚РёР№ С‚Р° РµР»РµРіР°РЅС‚РЅРёР№ РґРёР·Р°Р№РЅ РїС–РґС…РѕРґРёС‚СЊ РґР»СЏ Р±СѓРґСЊ-СЏРєРѕРіРѕ СЃС‚РёР»СЋ.",
+      "description": "Puma Fuse 3.0 — потужна тренувальна кросівка з широкою і плоскою підошвою. Верх ProFoam Lite для кращої підтримки. Ідеальна для функціонального тренінгу, важкої атлетики та HIIT.",
       "rating": 4.5,
-      "reviewsCount": 203,
+      "reviewsCount": 98,
       "inStock": true,
-      "isNew": true,
+      "isNew": false,
       "isSale": false,
       "gender": "unisex",
       "colors": [
-        "Р‘С–Р»РёР№",
-        "Р§РѕСЂРЅРёР№",
-        "РџС–С‰Р°РЅРёР№"
+        "Чорний",
+        "Білий/Золотий",
+        "Синій/Чорний"
       ],
-      "stock": 15
+      "stock": 22
     },
     {
-      "id": 12,
-      "name": "Metcon 8",
-      "brand": "Nike",
-      "price": 4799,
-      "oldPrice": null,
-      "image": "https://images.unsplash.com/photo-1585063395665-b8ad4acbb9af?w=600&q=80",
+      "id": 45,
+      "name": "TriBase Reign 6",
+      "brand": "Under Armour",
+      "price": 4199,
+      "oldPrice": 4800,
+      "image": "https://images.unsplash.com/photo-1707679950570-633e3fab0ac3?w=600&q=80",
       "category": "training",
       "sizes": [
         39,
@@ -369,62 +1444,229 @@
         42,
         43,
         44,
-        45
+        45,
+        46
       ],
-      "description": "Nike Metcon 8 вЂ” С‚СЂРµРЅСѓРІР°Р»СЊРЅС– РєСЂРѕСЃС–РІРєРё РґР»СЏ CrossFit С‚Р° СЃРёР»РѕРІРёС… С‚СЂРµРЅСѓРІР°РЅСЊ. РЎС‚Р°Р±С–Р»СЊРЅР° РїР»РѕСЃРєР° РїС–РґРѕС€РІР° С‚Р° РјС–С†РЅРёР№ РІРµСЂС… СЂРѕР±Р»СЏС‚СЊ С—С… С–РґРµР°Р»СЊРЅРёРјРё РґР»СЏ РІР°Р¶РєРёС… С‚СЂРµРЅСѓРІР°РЅСЊ. РўРµС…РЅРѕР»РѕРіС–СЏ React РїС–РЅРѕРїР»Р°СЃС‚Сѓ Р·Р°Р±РµР·РїРµС‡СѓС” РЅРµРѕР±С…С–РґРЅСѓ РїСЂСѓР¶РЅС–СЃС‚СЊ.",
-      "rating": 4.6,
-      "reviewsCount": 98,
+      "description": "Under Armour TriBase Reign 6 — унікальна триточкова підошва забезпечує стабільність при будь-яких рухах. UA HOVR пінка амортизує удари. Гнучкий верх зберігає контроль без втрати рухливості.",
+      "rating": 4.5,
+      "reviewsCount": 112,
       "inStock": true,
-      "isNew": true,
+      "isNew": false,
       "isSale": true,
       "gender": "male",
       "colors": [
-        "Р§РѕСЂРЅРёР№",
-        "Р‘С–Р»РёР№/Р›Р°Р·СѓСЂРЅРёР№",
-        "Р–РѕРІС‚РёР№"
+        "Чорний/Помаранчевий",
+        "Сірий"
       ],
       "stock": 15
+    },
+    {
+      "id": 46,
+      "name": "Free Metcon 6",
+      "brand": "Nike",
+      "price": 4499,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1656164603279-b989e21168ba?w=600&q=80",
+      "category": "training",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "Nike Free Metcon 6 — ідеальний гібрид між кросівкою для бігу і тренувальним взуттям. Передня частина із системою Free для гнучкості, тверда п'ята — для підйомів. Для різнопланових тренувань.",
+      "rating": 4.6,
+      "reviewsCount": 167,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Чорний/Білий",
+        "Синій/Рожевий"
+      ],
+      "stock": 18
+    },
+    {
+      "id": 47,
+      "name": "Powerlift 5",
+      "brand": "Adidas",
+      "price": 3499,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1623018996682-717d5c453907?w=600&q=80",
+      "category": "training",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Adidas Powerlift 5 — спеціалізоване взуття для важкої атлетики. Піднята п'ята 15 мм покращує глибину присідань. Ременна застібка на підйомі стопи. Тверда підошва для передачі максимального зусилля.",
+      "rating": 4.7,
+      "reviewsCount": 189,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Чорний",
+        "Синій/Золотий",
+        "Червоний/Білий"
+      ],
+      "stock": 20
+    },
+    {
+      "id": 48,
+      "name": "Minimus 40 v1",
+      "brand": "New Balance",
+      "price": 3999,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1602487790202-27a673875ef7?w=600&q=80",
+      "category": "training",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "description": "New Balance Minimus 40 v1 — мінімалістичне тренувальне взуття для тих, хто хоче відчути землю. Нульовий перепад п'ята-носок, легкий верх. Відмінна для функціонального тренінгу та реабілітації.",
+      "rating": 4.5,
+      "reviewsCount": 76,
+      "inStock": true,
+      "isNew": false,
+      "isSale": false,
+      "gender": "unisex",
+      "colors": [
+        "Чорний/Жовтий",
+        "Сірий/Синій"
+      ],
+      "stock": 14
+    },
+    {
+      "id": 49,
+      "name": "Lifter PR 2.0",
+      "brand": "Reebok",
+      "price": 3799,
+      "oldPrice": 4500,
+      "image": "https://images.unsplash.com/photo-1582740510910-388f37f9d4b6?w=600&q=80",
+      "category": "training",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Reebok Lifter PR 2.0 — преміальне взуття для важкої атлетики та пауерліфтингу. Дерев'яна вставка в п'яті забезпечує тверду та стабільну базу. Ремінець на підйомі надійно фіксує стопу під час підйому.",
+      "rating": 4.8,
+      "reviewsCount": 134,
+      "inStock": true,
+      "isNew": false,
+      "isSale": true,
+      "gender": "male",
+      "colors": [
+        "Чорний/Золотий",
+        "Білий/Синій"
+      ],
+      "stock": 11
+    },
+    {
+      "id": 50,
+      "name": "React Metcon Turbo 2",
+      "brand": "Nike",
+      "price": 5299,
+      "oldPrice": null,
+      "image": "https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=600&q=80",
+      "category": "training",
+      "sizes": [
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "description": "Nike React Metcon Turbo 2 — найлегша кросівка для CrossFit від Nike. Пінка React забезпечує комфорт при великих обсягах кардіо. Міцна підошва для гімнастичних вправ і лазіння. Найкраще з двох світів.",
+      "rating": 4.7,
+      "reviewsCount": 223,
+      "inStock": true,
+      "isNew": true,
+      "isSale": false,
+      "gender": "male",
+      "colors": [
+        "Білий/Чорний",
+        "Сірий/Помаранчевий",
+        "Чорний/Зелений"
+      ],
+      "stock": 16
     }
   ],
   "categories": [
     {
       "id": 1,
-      "name": "Р‘С–РіРѕРІС–",
+      "name": "Бігові",
       "slug": "running",
-      "icon": "рџЏѓ"
+      "icon": "🏃"
     },
     {
       "id": 2,
-      "name": "РџРѕРІСЃСЏРєРґРµРЅРЅС–",
+      "name": "Повсякденні",
       "slug": "casual",
-      "icon": "рџ‘џ"
+      "icon": "👟"
     },
     {
       "id": 3,
-      "name": "Р‘Р°СЃРєРµС‚Р±РѕР»СЊРЅС–",
+      "name": "Баскетбольні",
       "slug": "basketball",
-      "icon": "рџЏЂ"
+      "icon": "🏀"
     },
     {
       "id": 4,
-      "name": "РўСЂРµРЅСѓРІР°Р»СЊРЅС–",
+      "name": "Тренувальні",
       "slug": "training",
-      "icon": "рџ’Є"
+      "icon": "💪"
     }
   ],
   "users": [
     {
-      "name": "v",
+      "name": "vvvv",
       "email": "vxv@gmail.com",
       "password": "123456",
       "phone": "vx",
       "createdAt": "2026-02-25T21:11:59.567Z",
       "id": 1
+    },
+    {
+      "name": "ччч",
+      "email": "ggg@g",
+      "password": "111111",
+      "phone": "24",
+      "createdAt": "2026-06-14T22:04:41.757Z",
+      "id": 2
     }
   ],
   "orders": [
     {
-      "userId": null,
       "customerName": "4",
       "customerEmail": "444@gmail.com",
       "customerPhone": "444",
@@ -452,8 +1694,212 @@
         }
       ],
       "total": 16497,
-      "status": "new",
+      "status": "shipped",
       "createdAt": "2026-02-25T21:13:58.529Z",
+      "id": 1
+    },
+    {
+      "customerName": "1e2",
+      "customerEmail": "23@gmail.com",
+      "customerPhone": "12323",
+      "city": "Кременчуг",
+      "address": "Кременчуг",
+      "comment": "",
+      "items": [
+        {
+          "id": 2,
+          "name": "Ultraboost 22",
+          "brand": "Adidas",
+          "price": 5499,
+          "image": "https://images.unsplash.com/photo-1639572604550-7b958a14eaa9?w=600&q=80",
+          "size": 41,
+          "quantity": 2
+        }
+      ],
+      "total": 10998,
+      "status": "confirmed",
+      "createdAt": "2026-02-25T21:31:39.202Z",
+      "id": 2
+    },
+    {
+      "customerName": "shs",
+      "customerEmail": "63",
+      "customerPhone": "65",
+      "city": "35",
+      "address": "53",
+      "comment": "53",
+      "items": [
+        {
+          "id": 3,
+          "name": "RS-XВі Puzzle",
+          "brand": "Puma",
+          "price": 3199,
+          "image": "https://images.unsplash.com/photo-1715692280042-a973f8d9ac95?w=600&q=80",
+          "size": 39,
+          "quantity": 1
+        }
+      ],
+      "total": 3199,
+      "status": "cancelled",
+      "createdAt": "2026-05-01T20:36:41.561Z",
+      "id": 3
+    },
+    {
+      "customerName": "р",
+      "customerEmail": "тьии",
+      "customerPhone": "ть",
+      "city": "иьтииии",
+      "address": "итььь",
+      "comment": "итит",
+      "items": [
+        {
+          "id": 2,
+          "name": "Ultraboost 23",
+          "brand": "Adidas",
+          "price": 6499,
+          "image": "https://images.unsplash.com/photo-1580902394724-b08ff9ba7e8a?w=600&q=80",
+          "size": 42,
+          "quantity": 1
+        }
+      ],
+      "total": 6499,
+      "status": "new",
+      "createdAt": "2026-06-14T16:53:40.679Z",
+      "id": 4
+    },
+    {
+      "customerName": "мы",
+      "customerEmail": "ыави",
+      "customerPhone": "ывии",
+      "city": "ыивии",
+      "address": "иывии",
+      "comment": "",
+      "items": [
+        {
+          "id": 2,
+          "name": "Ultraboost 23",
+          "brand": "Adidas",
+          "price": 6499,
+          "image": "https://images.unsplash.com/photo-1580902394724-b08ff9ba7e8a?w=600&q=80",
+          "size": 42,
+          "quantity": 1
+        },
+        {
+          "id": 1,
+          "name": "Air Zoom Pegasus 40",
+          "brand": "Nike",
+          "price": 5799,
+          "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+          "size": 38,
+          "quantity": 1
+        }
+      ],
+      "total": 12298,
+      "status": "new",
+      "createdAt": "2026-06-14T16:57:20.309Z",
+      "id": 5
+    },
+    {
+      "customerName": "аави",
+      "customerEmail": "ав",
+      "customerPhone": "ав",
+      "city": "а",
+      "address": "ав",
+      "comment": "",
+      "items": [
+        {
+          "id": 2,
+          "name": "Ultraboost 23",
+          "brand": "Adidas",
+          "price": 6499,
+          "image": "https://images.unsplash.com/photo-1580902394724-b08ff9ba7e8a?w=600&q=80",
+          "size": 42,
+          "quantity": 1
+        },
+        {
+          "id": 1,
+          "name": "Air Zoom Pegasus 40",
+          "brand": "Nike",
+          "price": 5799,
+          "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+          "size": 38,
+          "quantity": 1
+        },
+        {
+          "id": 1,
+          "name": "Air Zoom Pegasus 40",
+          "brand": "Nike",
+          "price": 5799,
+          "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+          "size": 39,
+          "quantity": 1
+        }
+      ],
+      "total": 18097,
+      "status": "shipped",
+      "createdAt": "2026-06-14T16:57:45.946Z",
+      "id": 6
+    },
+    {
+      "customerName": "сячим",
+      "customerEmail": "ичсми",
+      "customerPhone": "и",
+      "city": "ичс",
+      "address": "ичс",
+      "deliveryMethod": "nova_poshta",
+      "paymentMethod": "card",
+      "comment": "счи",
+      "items": [
+        {
+          "id": 50,
+          "name": "React Metcon Turbo 2",
+          "brand": "Nike",
+          "price": 5299,
+          "image": "https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=600&q=80",
+          "size": 39,
+          "quantity": 1
+        }
+      ],
+      "total": 5299,
+      "status": "shipped",
+      "createdAt": "2026-06-14T17:04:01.419Z",
+      "id": 7
+    },
+    {
+      "userId": 2,
+      "customerName": "ччч",
+      "customerEmail": "ggg@g",
+      "customerPhone": "24",
+      "city": "cvxz",
+      "address": "vc",
+      "deliveryMethod": "nova_poshta",
+      "paymentMethod": "card",
+      "comment": "",
+      "items": [
+        {
+          "id": 1,
+          "name": "Air Zoom Pegasus 40",
+          "brand": "Nike",
+          "price": 5799,
+          "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80",
+          "size": 38,
+          "quantity": 1
+        }
+      ],
+      "total": 5799,
+      "status": "new",
+      "createdAt": "2026-06-14T22:12:54.038Z",
+      "id": 8
+    }
+  ],
+  "messages": [
+    {
+      "name": "ччч",
+      "email": "ggg@g",
+      "phone": "24",
+      "text": "gg",
+      "read": false,
+      "createdAt": "2026-06-14T22:16:29.420Z",
       "id": 1
     }
   ]
