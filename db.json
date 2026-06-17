@@ -1740,7 +1740,7 @@
         }
       ],
       "total": 3199,
-      "status": "cancelled",
+      "status": "shipped",
       "createdAt": "2026-05-01T20:36:41.561Z",
       "id": 3
     },
@@ -1887,20 +1887,10 @@
         }
       ],
       "total": 5799,
-      "status": "new",
+      "status": "confirmed",
       "createdAt": "2026-06-14T22:12:54.038Z",
       "id": 8
     }
   ],
-  "messages": [
-    {
-      "name": "ччч",
-      "email": "ggg@g",
-      "phone": "24",
-      "text": "gg",
-      "read": false,
-      "createdAt": "2026-06-14T22:16:29.420Z",
-      "id": 1
-    }
-  ]
+  "messages": []
 }
