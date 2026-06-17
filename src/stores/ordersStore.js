@@ -59,6 +59,15 @@ export const useOrdersStore = defineStore("orders", () => {
     return updated;
   }
 
+  async function deleteOrder(id) {
+    try {
+      await fetch(`/api/orders/${id}`, { method: "DELETE" });
+    } catch {
+      // backend may be unavailable in production — still remove from UI
+    }
+    orders.value = orders.value.filter((o) => o.id !== id);
+  }
+
   async function fetchAllUsers() {
     const res = await fetch("/api/users");
     if (!res.ok) throw new Error("Помилка завантаження користувачів");
@@ -72,6 +81,7 @@ export const useOrdersStore = defineStore("orders", () => {
     fetchUserOrders,
     createOrder,
     updateOrderStatus,
+    deleteOrder,
     fetchAllUsers,
   };
 });

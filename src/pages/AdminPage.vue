@@ -36,6 +36,7 @@ const orderSearch = ref("");
 const selectedOrderStatus = ref("");
 const expandedOrder = ref(null);
 const userSearch = ref("");
+const deleteOrderConfirmId = ref(null);
 
 // Toast notification
 const toast = ref(null); // { type: 'success'|'error', message: '' }
@@ -132,6 +133,17 @@ async function changeOrderStatus(order, status) {
   try {
     await ordersStore.updateOrderStatus(order.id, status);
     showToast("success", `✅ Статус замовлення #${order.id} змінено`);
+  } catch (e) {
+    showToast("error", `❌ ${e.message}`);
+  }
+}
+
+async function deleteOrder(id) {
+  try {
+    await ordersStore.deleteOrder(id);
+    deleteOrderConfirmId.value = null;
+    if (expandedOrder.value === id) expandedOrder.value = null;
+    showToast("success", `🗑️ Замовлення #${id} видалено`);
   } catch (e) {
     showToast("error", `❌ ${e.message}`);
   }
@@ -994,6 +1006,17 @@ onMounted(async () => {
                 <option v-for="(info, key) in orderStatusLabels" :key="key" :value="key">{{ info.label }}</option>
               </select>
 
+              <!-- Delete order button -->
+              <button
+                @click.stop="deleteOrderConfirmId = order.id"
+                class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors shrink-0"
+                title="Видалити замовлення"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/>
+                </svg>
+              </button>
+
               <svg class="w-4 h-4 text-gray-400 transition-transform shrink-0" :class="{ 'rotate-180': expandedOrder === order.id }"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
@@ -1404,6 +1427,38 @@ onMounted(async () => {
                 </div>
               </div>
             </Transition>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Delete order confirm dialog -->
+    <Transition name="fade">
+      <div
+        v-if="deleteOrderConfirmId"
+        class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+      >
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm">
+          <div class="text-4xl mb-3 text-center">🗑️</div>
+          <h3 class="text-lg font-bold text-gray-900 text-center mb-2">
+            Видалити замовлення?
+          </h3>
+          <p class="text-gray-500 text-sm text-center mb-6">
+            Замовлення #{{ deleteOrderConfirmId }} буде видалено назавжди.
+          </p>
+          <div class="flex gap-3">
+            <button
+              @click="deleteOrderConfirmId = null"
+              class="flex-1 py-2.5 border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+            >
+              Скасувати
+            </button>
+            <button
+              @click="deleteOrder(deleteOrderConfirmId)"
+              class="flex-1 py-2.5 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl transition-colors"
+            >
+              Видалити
+            </button>
           </div>
         </div>
       </div>
